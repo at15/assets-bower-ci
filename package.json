@@ -18,7 +18,8 @@
     "dependencies": {
         "vinyl": "latest",
         "log4js": "latest",
-        "glob": "latest"
+        "glob": "latest",
+        "bower": "latest"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }
