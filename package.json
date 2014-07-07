@@ -16,7 +16,9 @@
         "url": "https://github.com/at15/assets-bower-ci/issues"
     },
     "dependencies": {
-        "log4js": "latest"
+        "vinyl": "latest",
+        "log4js": "latest",
+        "glob": "latest"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }
