@@ -1,0 +1,22 @@
+{
+    "name": "assets-bower-ci",
+    "version": "0.0.0",
+    "description": "assets-bower-ci ===============",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/at15/assets-bower-ci.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/at15/assets-bower-ci/issues"
+    },
+    "dependencies": {
+        "log4js": "latest"
+    },
+    "homepage": "https://github.com/at15/assets-bower-ci"
+}
