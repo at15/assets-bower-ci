@@ -47,4 +47,6 @@ Mgr.prototype.mergeFiles = function () {
 
 };
 
-module.exports = Mgr;
+module.exports = function(config){
+    return new Mgr(config);
+};
