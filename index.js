@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
+var tq = require('./tq');
 
 var log4js = require('log4js');
 log4js.configure({appenders: [
@@ -33,27 +34,48 @@ Mgr.prototype.setConfig = function (configPath) {
 };
 
 Mgr.prototype.parseLib = function (libName) {
-    if (typeof this._libs[libName] !== 'object') {
-        var libFiles = [];
-        //TODO: check if it has any dependency
-        if (typeof this._config.libs[libName] === 'object') {
-            // get all the files
-            var fileGlob = this._config.libs[libName].files;
-            if (typeof fileGlob !== 'object') {
-                fileGlob = [fileGlob];
-            }
-            fileGlob.forEach(function (pattern) {
-                var files = glob.sync(pattern, {});
-                files.forEach(function (p) {
-                    libFiles.push(path.resolve(p));
-                });
+
+    if (typeof this._libs[libName] === 'object') {
+        return this._libs[libName];
+    }
+
+
+    var libConfig = this._config.libs[libName];
+    if (libConfig.bower) {
+        return this.readBower(libName);
+    }
+
+    var libFiles = [];
+
+    if (typeof libConfig === 'object') {
+
+        // get all the dependencies
+        if (typeof libConfig.dependencies === 'object') {
+            var deps = libConfig.dependencies;
+            var me = this;
+            deps.forEach(function (d) {
+                libFiles = me.mergeFiles(libFiles, me.parseLib(d));
             });
         }
-        if (libFiles.length === 0) {
-            log.warn('Lib: ' + libName + ' is empty! ');
+
+        // get all the files
+        var fileGlob = this._config.libs[libName].files;
+        if (typeof fileGlob !== 'object') {
+            fileGlob = [fileGlob];
         }
-        this._libs[libName] = libFiles;
+        fileGlob.forEach(function (pattern) {
+            var files = glob.sync(pattern, {});
+            files.forEach(function (p) {
+                libFiles.push(path.resolve(p));
+            });
+        });
     }
+
+    if (libFiles.length === 0) {
+        log.warn('Lib: ' + libName + ' is empty! ');
+    }
+
+    this._libs[libName] = libFiles;
     return this._libs[libName];
 };
 
@@ -111,7 +133,25 @@ Mgr.prototype.parsePage = function () {
 
 // TODO: do we already have function like this?
 Mgr.prototype.mergeFiles = function () {
+    var arg = arguments;
+    var merged = [];
 
+    if (arg.length === 0) {
+        log.warn('Nothing provided for merge');
+        return merged;
+    }
+    var i, to_merge = arg.length;
+    for (i = 0; i < to_merge; i++) {
+        var scripts = arg[i];
+        var j, script_count = scripts.length;
+        for (j = 0; j < script_count; j++) {
+            var s = scripts[j];
+            if (-1 === tq.inArray(merged, s)) {
+                merged.push(s);
+            }
+        }
+    }
+    return merged;
 };
 
 module.exports = Mgr;

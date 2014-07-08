@@ -3,9 +3,13 @@
         "jquery": {
             "bower": true
         },
+        "bootstrap": {
+            "bower": true
+        },
         "date-time": {
             "bower": false,
-            "files": ["site/assets/lib/date-time/*.*"]
+            "files": ["site/assets/lib/date-time/*.*"],
+            "dependencies": ["jquery", "bootstrap"]
         }
     }
 }
