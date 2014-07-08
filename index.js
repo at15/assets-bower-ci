@@ -80,50 +80,61 @@ Mgr.prototype.parseLib = function (libName) {
 };
 
 Mgr.prototype.readBower = function (pkgName) {
-    if (typeof this._libs[pkgName] !== 'object') {
-        // final files in absolute path
-        var libFiles = [];
-        var bowerJsonPath = 'bower_components/' + pkgName + '/bower.json';
-        var bowerJson = {};
+
+    if (typeof this._libs[pkgName] === 'object') {
+        return this._libs[pkgName];
+    }
+
+    // final files in absolute path
+    var libFiles = [];
+    var bowerJsonPath = 'bower_components/' + pkgName + '/bower.json';
+    var bowerJson = {};
+    try {
+        bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
+    } catch (e) {
+        // need to try .bower.json
+        bowerJsonPath = 'bower_components/' + pkgName + '/.bower.json';
         try {
             bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
         } catch (e) {
-            // need to try .bower.json
-            bowerJsonPath = 'bower_components/' + pkgName + '/.bower.json';
-            try {
-                bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
-            } catch (e) {
-                log.error('Can\'t read bower.json! ' + bowerJsonPath);
-            }
+            log.error('Can\'t read bower.json! ' + bowerJsonPath);
+            return libFiles;
         }
-
-        var mainFilesGlob = bowerJson.main;
-        if (typeof mainFilesGlob !== 'object') {
-            mainFilesGlob = [mainFilesGlob];
-        }
-
-        // change the directory
-        var cwd = process.cwd();
-        process.chdir('bower_components/' + pkgName);
-
-        mainFilesGlob.forEach(function (pattern) {
-            var files = glob.sync(pattern, {});
-            files.forEach(function (p) {
-                libFiles.push(path.resolve(p));
-            });
-        });
-
-        // go back to the old dir
-        process.chdir(cwd);
-        this._libs[pkgName] = libFiles;
-
-        // TODO:check the dependencies
-
     }
+
+    //TODO: get the dependencies
+    // this.mergeFiles(libFiles)
+
+    var mainFilesGlob = bowerJson.main;
+    if (typeof mainFilesGlob !== 'object') {
+        mainFilesGlob = [mainFilesGlob];
+    }
+
+    // change the directory
+    var cwd = process.cwd();
+    process.chdir('bower_components/' + pkgName);
+
+    mainFilesGlob.forEach(function (pattern) {
+        var files = glob.sync(pattern, {});
+        files.forEach(function (p) {
+            libFiles.push(path.resolve(p));
+        });
+    });
+
+    // go back to the old dir
+    process.chdir(cwd);
+
+    this._libs[pkgName] = libFiles;
     return this._libs[pkgName];
+
 };
 
-Mgr.prototype.parseGroup = function () {
+Mgr.prototype.parseGroup = function (groupName) {
+    // now we get the group
+    var groupConfig = this._config.groups[groupName];
+    if(typeof groupConfig === 'object'){
+
+    }
 
 };
 
