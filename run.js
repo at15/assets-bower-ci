@@ -1,5 +1,7 @@
 var assetMgr = require('./index');
 
-console.log(assetMgr);
-var mgr = assetMgr('assets.json');
+//console.log(assetMgr);
+var mgr = new assetMgr('assets.json');
 mgr.readBower('jquery');
+//mgr.readBower('bootstrap');// bs's main don't need glob
+//mgr.readBower('fontawesome');// bs's main don't need glob

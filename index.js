@@ -1,4 +1,6 @@
 var fs = require('fs');
+var path = require('path');
+var glob = require('glob');
 
 var log4js = require('log4js');
 log4js.configure({appenders: [
@@ -36,33 +38,43 @@ Mgr.prototype.parseLib = function () {
 
 Mgr.prototype.readBower = function (pkgName) {
     // this just search available
-
-//    bower.commands
-//        .search('jquery', {})
-//        .on('end', function (results) {
-//            console.log(results);
-//        });
-
-    // list is not useable
-//    bower.commands
-//        .list()
-//        .on('end', function (results) {
-//            console.log(results);
-//        });
-
-//       console.log(bower.commands);
-//    bower.commands.info().on('end', function (r) {
-//        console.log(r)
-//    });
     // find the bower.json in bower_components
-    var bowerJsonPath = 'bower_components/' + pkgName +'/bower.json';
+    var bowerJsonPath = 'bower_components/' + pkgName + '/bower.json';
     var bowerJson = {};
     try {
         bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
     } catch (e) {
-        log.error('Can\'t read bower.json! ' + bowerJsonPath);
+        // need to try .bower.json
+        bowerJsonPath = 'bower_components/' + pkgName + '/.bower.json';
+        try {
+            bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
+        } catch (e) {
+            log.error('Can\'t read bower.json! ' + bowerJsonPath);
+        }
     }
-    console.log(bowerJson);
+    // console.log(bowerJson);
+    // now we get all files
+    var files = [];
+    var mainFiles = bowerJson.main;
+    if (typeof mainFiles !== 'object') {
+        mainFiles = [mainFiles];
+    }
+    var cwd = process.cwd();
+    process.chdir('bower_components/' + pkgName);
+
+    for (var i = 0; i < mainFiles.length; i++) {
+        console.log(mainFiles[i]);
+
+        var f = glob.sync(mainFiles[i], {});
+        console.log(f);
+        f.forEach(function (p) {
+            console.log(path.resolve(p));
+        });
+    }
+    //console.log(process.cwd());
+    process.chdir(cwd);
+    //console.log(process.cwd());
+
 };
 
 Mgr.prototype.parseGroup = function () {
@@ -78,6 +90,4 @@ Mgr.prototype.mergeFiles = function () {
 
 };
 
-module.exports = function (config) {
-    return new Mgr(config);
-};
+module.exports = Mgr;
