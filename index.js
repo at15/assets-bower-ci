@@ -37,8 +37,8 @@ Mgr.prototype.parseLib = function () {
 };
 
 Mgr.prototype.readBower = function (pkgName) {
-    // this just search available
-    // find the bower.json in bower_components
+    // final files in absolute path
+    var libFiles = [];
     var bowerJsonPath = 'bower_components/' + pkgName + '/bower.json';
     var bowerJson = {};
     try {
@@ -52,29 +52,26 @@ Mgr.prototype.readBower = function (pkgName) {
             log.error('Can\'t read bower.json! ' + bowerJsonPath);
         }
     }
-    // console.log(bowerJson);
-    // now we get all files
-    var files = [];
-    var mainFiles = bowerJson.main;
-    if (typeof mainFiles !== 'object') {
-        mainFiles = [mainFiles];
+
+    var mainFilesGlob = bowerJson.main;
+    if (typeof mainFilesGlob !== 'object') {
+        mainFilesGlob = [mainFilesGlob];
     }
+
+    // change the directory
     var cwd = process.cwd();
     process.chdir('bower_components/' + pkgName);
 
-    for (var i = 0; i < mainFiles.length; i++) {
-        console.log(mainFiles[i]);
-
-        var f = glob.sync(mainFiles[i], {});
-        console.log(f);
-        f.forEach(function (p) {
-            console.log(path.resolve(p));
+    mainFilesGlob.forEach(function (pattern) {
+        var files = glob.sync(pattern, {});
+        files.forEach(function (p) {
+            libFiles.push(path.resolve(p));
         });
-    }
-    //console.log(process.cwd());
-    process.chdir(cwd);
-    //console.log(process.cwd());
+    });
 
+    // go back to the old dir
+    process.chdir(cwd);
+    return libFiles;
 };
 
 Mgr.prototype.parseGroup = function () {
