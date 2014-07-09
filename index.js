@@ -33,6 +33,15 @@ Mgr.prototype.setConfig = function (configPath) {
     }
 };
 
+Mgr.prototype.config = function (name) {
+    if (typeof this._config[name] !== 'undefined') {
+        return this._config[name];
+    } else {
+        log.warn(name + ' is not set in config!');
+        return null;
+    }
+};
+
 Mgr.prototype.parseFile = function (fileGlob) {
     var allFiles = [];
     if (typeof fileGlob !== 'object') {
@@ -79,7 +88,8 @@ Mgr.prototype.parseLib = function (libName) {
 
     var libConfig = this._config.libs[libName];
     if (libConfig.bower) {
-        return this.readBower(libName);
+        var bowerPkg = this.readBower(libName);
+        return this.copyBower(bowerPkg);
     }
 
     var libFiles = [];
@@ -108,21 +118,22 @@ Mgr.prototype.parseLib = function (libName) {
     return this._libs[libName];
 };
 
-Mgr.prototype.readBower = function (pkgName) {
+Mgr.prototype.getBowerPath = function (pkgName) {
+    return 'bower_components/' + pkgName;
+};
 
-    if (typeof this._libs[pkgName] === 'object') {
-        return this._libs[pkgName];
-    }
+Mgr.prototype.readBower = function (pkgName) {
 
     // final files in absolute path
     var libFiles = [];
-    var bowerJsonPath = 'bower_components/' + pkgName + '/bower.json';
+    var bowerPath = this.getBowerPath(pkgName);
+    var bowerJsonPath = bowerPath + '/bower.json';
     var bowerJson = {};
     try {
         bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
     } catch (e) {
         // need to try .bower.json
-        bowerJsonPath = 'bower_components/' + pkgName + '/.bower.json';
+        bowerJsonPath = bowerPath + '/.bower.json';
         try {
             bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
         } catch (e) {
@@ -135,7 +146,7 @@ Mgr.prototype.readBower = function (pkgName) {
 
     // change the directory
     var cwd = process.cwd();
-    process.chdir('bower_components/' + pkgName);
+    process.chdir(bowerPath);
 
     var mainFilesGlob = bowerJson.main;
     libFiles = this.parseFile(mainFilesGlob);
@@ -143,9 +154,26 @@ Mgr.prototype.readBower = function (pkgName) {
     // go back to the previous dir
     process.chdir(cwd);
 
-    this._libs[pkgName] = libFiles;
-    return this._libs[pkgName];
+    return {
+        files: libFiles,
+        name: pkgName
+    };
 
+};
+
+// copy bower files and keep the same structure
+Mgr.prototype.copyBower = function (bowerPkg) {
+    console.log(bowerPkg);
+    var libPath = this.config('libpath');
+    var bowerPath = path.resolve(this.getBowerPath(bowerPkg.name));
+    var rPath;
+    var dstPath;
+    bowerPkg.files.forEach(function(filePath){
+        rPath = path.relative(bowerPath,filePath);
+        dstPath = path.join(libPath,rPath);
+        tq.cp(filePath,dstPath);
+        console.log(rPath);
+    });
 };
 
 // TODO: parse lib should also behave like parse file, which can accept both array and string?

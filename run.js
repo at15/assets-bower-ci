@@ -16,4 +16,7 @@ var mgr = new assetMgr('assets.json');
 
 //console.log(mgr.parsePage('act'));
 
-mgr.parseAllPage();
+//mgr.parseAllPage();
+
+var jq = mgr.readBower('jquery');
+mgr.copyBower(jq);
