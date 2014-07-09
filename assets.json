@@ -17,6 +17,11 @@
             "libs":["jquery","bootstrap"],
             "files":[]
         }
+    },
+    "pages":{
+        "act":{
+            "groups":["base"]
+        }
     }
 
 }

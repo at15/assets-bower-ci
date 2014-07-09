@@ -47,6 +47,29 @@ Mgr.prototype.parseFile = function (fileGlob) {
     return allFiles;
 };
 
+
+Mgr.prototype.mergeFiles = function () {
+    var arg = arguments;
+    var merged = [];
+
+    if (arg.length === 0) {
+        log.warn('Nothing provided for merge');
+        return merged;
+    }
+    var i, to_merge = arg.length;
+    for (i = 0; i < to_merge; i++) {
+        var scripts = arg[i];
+        var j, script_count = scripts.length;
+        for (j = 0; j < script_count; j++) {
+            var s = scripts[j];
+            if (-1 === tq.inArray(merged, s)) {
+                merged.push(s);
+            }
+        }
+    }
+    return merged;
+};
+
 Mgr.prototype.parseLib = function (libName) {
 
     if (typeof this._libs[libName] === 'object') {
@@ -146,48 +169,42 @@ Mgr.prototype.parseLibsFiles = function (config) {
 
 Mgr.prototype.parseGroup = function (groupName) {
     // now we get the group
+    if (typeof this._groups[groupName] === 'object') {
+        return this._groups[groupName];
+    }
+
     var groupConfig = this._config.groups[groupName];
     var groupFiles = [];
     if (typeof groupConfig === 'object') {
         groupFiles = this.parseLibsFiles(groupConfig);
     }
+
     if (groupFiles.length === 0) {
         log.warn('Group: ' + groupName + ' is empty!');
     }
-    return groupFiles;
+
+    this._groups[groupName] = groupFiles;
+    return this._groups[groupName];
 };
 
 Mgr.prototype.parsePage = function (pageName) {
+    // we don't need to cache the page right?...
+
     var pageConfig = this._config.pages[pageName];
     var pageFiles = [];
+    var me = this;
     if (typeof pageConfig === 'object') {
-        // TODO:get the group
-        pageFiles = this.parseLibsFiles(pageConfig);
-
-    }
-};
-
-// TODO: do we already have function like this?
-Mgr.prototype.mergeFiles = function () {
-    var arg = arguments;
-    var merged = [];
-
-    if (arg.length === 0) {
-        log.warn('Nothing provided for merge');
-        return merged;
-    }
-    var i, to_merge = arg.length;
-    for (i = 0; i < to_merge; i++) {
-        var scripts = arg[i];
-        var j, script_count = scripts.length;
-        for (j = 0; j < script_count; j++) {
-            var s = scripts[j];
-            if (-1 === tq.inArray(merged, s)) {
-                merged.push(s);
-            }
+        var groups = pageConfig.groups;
+        if (typeof groups === 'object') {
+            groups.forEach(function (groupName) {
+                pageFiles = me.mergeFiles(pageFiles, me.parseGroup(groupName));
+            });
         }
+        pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
     }
-    return merged;
+
+    return pageFiles;
 };
+
 
 module.exports = Mgr;
