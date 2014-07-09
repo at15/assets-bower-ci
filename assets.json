@@ -1,7 +1,7 @@
 {
-    "libpath":"site/assets/lib",
-    "grouppath":"site/assets/group",
-    "dst":"parsed.json",
+    "libpath": "site/assets/lib",
+    "grouppath": "site/assets/group",
+    "dst": "parsed.json",
     "libs": {
         "jquery": {
             "bower": true
@@ -15,15 +15,16 @@
             "dependencies": ["jquery", "bootstrap"]
         }
     },
-    "groups":{
-        "base":{
-            "libs":["jquery","bootstrap"],
-            "files":[]
+    "groups": {
+        "base": {
+            "libs": ["jquery", "bootstrap"],
+            "files": []
         }
     },
-    "pages":{
-        "act":{
-            "groups":["base"]
+    "pages": {
+        "act": {
+            "groups": ["base"],
+            "libs": ["date-time"]
         }
     }
 
