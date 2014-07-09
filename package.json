@@ -20,7 +20,8 @@
         "log4js": "latest",
         "glob": "latest",
         "bower": "latest",
-        "mkdirp":"latest"
+        "mkdirp":"latest",
+        "uglify-js":"latest"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }

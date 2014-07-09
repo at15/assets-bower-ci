@@ -22,10 +22,13 @@ tq.inArray = function (arr, niddle) {
 
 // copy file sync
 tq.cp = function (src, dst) {
-    console.log('copy ' + src + ' to ' + dst);
-    if (!fs.exists(path.dirname(dst))) {
+    // console.log('copy ' + src + ' to ' + dst);
+    if (!fs.existsSync(path.dirname(dst))) {
         mkdirp.sync(path.dirname(dst));
     }
     fs.writeFileSync(dst, fs.readFileSync(src));
 };
+
+
+
 module.exports = tq;

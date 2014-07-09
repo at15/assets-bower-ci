@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
 var tq = require('./tq');
+var mkdirp = require('mkdirp');
 
 var log4js = require('log4js');
 log4js.configure({appenders: [
@@ -12,6 +13,8 @@ var log = log4js.getLogger();
 log.setLevel('DEBUG');
 
 var bower = require('bower');
+var UglifyJS = require("uglify-js");
+
 
 function Mgr(configPath) {
     this.init();
@@ -197,6 +200,12 @@ Mgr.prototype.parseLibsFiles = function (config) {
     return allFiles;
 };
 
+
+Mgr.prototype.getGroupPath = function (groupName) {
+    return this.config('grouppath') + '/' + groupName;
+};
+
+
 Mgr.prototype.parseGroup = function (groupName) {
     // now we get the group
     if (typeof this._groups[groupName] === 'object') {
@@ -205,6 +214,12 @@ Mgr.prototype.parseGroup = function (groupName) {
 
     var groupConfig = this._config.groups[groupName];
     var groupFiles = [];
+
+    if (typeof groupConfig === 'undefined') {
+        log.error('Undefined group name! ');
+        return groupFiles;
+    }
+
     if (typeof groupConfig === 'object') {
         groupFiles = this.parseLibsFiles(groupConfig);
     }
@@ -213,8 +228,63 @@ Mgr.prototype.parseGroup = function (groupName) {
         log.warn('Group: ' + groupName + ' is empty!');
     }
 
+
+    var groupPath = this.getGroupPath();
+    if (!fs.existsSync(groupPath)) {
+        mkdirp.sync(groupPath);
+    }
+
+    var dst = {
+        js: groupPath + '/' + groupName + '.min.js',
+        css: groupPath + '/' + groupName + '.min.css'
+    };
+    groupFiles = this.minFiles(groupFiles, dst);
     this._groups[groupName] = groupFiles;
     return this._groups[groupName];
+};
+
+
+Mgr.prototype.minFiles = function (files, dst) {
+    // first split the files
+    var jsFiles = [];
+    var cssFiles = [];
+    files.forEach(function (p) {
+        var ext = path.extname(p);
+        if (ext === '.js') {
+            jsFiles.push(p);
+        }
+        if (ext === '.css') {
+            cssFiles.push(p);
+        }
+    });
+
+    // write the js
+    var jsContent = this.minJs(jsFiles);
+    fs.writeFileSync(dst.js, jsContent);
+    dst.js = path.resolve(dst.js);
+
+    // TODO: write the css
+    // write the css
+
+
+    return [dst.js];
+
+};
+
+Mgr.prototype.minJs = function (jsFiles) {
+    var realJsFiles = [];
+    jsFiles.forEach(function (p) {
+        if (path.extname(p) === '.js') {
+            realJsFiles.push(p);
+        }
+    });
+    var result = UglifyJS.minify(realJsFiles);
+    // console.log(result.code);
+    return result.code;
+};
+
+Mgr.prototype.minCss = function (cssFiles) {
+
 };
 
 Mgr.prototype.parsePage = function (pageName) {
@@ -236,10 +306,6 @@ Mgr.prototype.parsePage = function (pageName) {
     return this._pages[pageName];
 };
 
-// split files from their extension
-Mgr.prototype.splitFiles = function (files) {
-    var scripts = {js: [], css: []}
-};
 
 Mgr.prototype.toJSON = function (dst) {
     var str_pages = JSON.stringify(this._pages);

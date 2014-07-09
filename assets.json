@@ -1,5 +1,6 @@
 {
     "libpath":"site/assets/lib",
+    "grouppath":"site/assets/group",
     "dst":"parsed.json",
     "libs": {
         "jquery": {
