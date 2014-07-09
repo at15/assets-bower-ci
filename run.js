@@ -18,5 +18,7 @@ var mgr = new assetMgr('assets.json');
 
 //mgr.parseAllPage();
 
-var jq = mgr.readBower('jquery');
-mgr.copyBower(jq);
+//var jq = mgr.readBower('jquery');
+//mgr.copyBower(jq);
+
+console.log(mgr.parseLib('date-time'));

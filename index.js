@@ -163,17 +163,19 @@ Mgr.prototype.readBower = function (pkgName) {
 
 // copy bower files and keep the same structure
 Mgr.prototype.copyBower = function (bowerPkg) {
-    console.log(bowerPkg);
+//    console.log(bowerPkg);
     var libPath = this.config('libpath') + '/' + bowerPkg.name;
     var bowerPath = path.resolve(this.getBowerPath(bowerPkg.name));
     var rPath;
     var dstPath;
+    var allFiles = [];
     bowerPkg.files.forEach(function (filePath) {
         rPath = path.relative(bowerPath, filePath);
         dstPath = path.join(libPath, rPath);
         tq.cp(filePath, dstPath);
-        console.log(rPath);
+        allFiles.push(path.resolve(dstPath));
     });
+    return allFiles;
 };
 
 // TODO: parse lib should also behave like parse file, which can accept both array and string?
