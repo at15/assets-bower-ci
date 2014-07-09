@@ -125,21 +125,31 @@ Mgr.prototype.readBower = function (pkgName) {
 
 };
 
+// TODO: parse lib should also behave like parse file, which can accept both array and string?
+// no ... just one thing at a time
+Mgr.prototype.parseLibsFiles = function (config) {
+    var allFiles = [];
+    var me = this;
+    if (typeof config.libs == 'object') {
+        if (typeof config.libs === 'object') {
+            config.libs.forEach(function (libName) {
+                allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
+            })
+        }
+        if (typeof config.files === 'object') {
+            var fileGlob = config.files;
+            allFiles = this.mergeFiles(allFiles, this.parseFile(fileGlob));
+        }
+    }
+    return allFiles;
+};
+
 Mgr.prototype.parseGroup = function (groupName) {
     // now we get the group
     var groupConfig = this._config.groups[groupName];
     var groupFiles = [];
     if (typeof groupConfig === 'object') {
-        var me = this;
-        if (typeof groupConfig.libs === 'object') {
-            groupConfig.libs.forEach(function (libName) {
-                groupFiles = me.mergeFiles(groupFiles, me.parseLib(libName));
-            })
-        }
-        if (typeof groupConfig.files === 'object') {
-            var groupFileGlob = groupConfig.files;
-            groupFiles = this.mergeFiles(groupFiles, this.parseFile(groupFileGlob));
-        }
+        groupFiles = this.parseLibsFiles(groupConfig);
     }
     if (groupFiles.length === 0) {
         log.warn('Group: ' + groupName + ' is empty!');
@@ -151,7 +161,9 @@ Mgr.prototype.parsePage = function (pageName) {
     var pageConfig = this._config.pages[pageName];
     var pageFiles = [];
     if (typeof pageConfig === 'object') {
-        var me = this;
+        // TODO:get the group
+        pageFiles = this.parseLibsFiles(pageConfig);
+
     }
 };
 
