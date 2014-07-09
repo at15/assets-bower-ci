@@ -207,6 +207,8 @@ Mgr.prototype.getGroupPath = function (groupName) {
 
 
 Mgr.prototype.parseGroup = function (groupName) {
+    log.debug(groupName);
+
     // now we get the group
     if (typeof this._groups[groupName] === 'object') {
         return this._groups[groupName];
@@ -229,7 +231,7 @@ Mgr.prototype.parseGroup = function (groupName) {
     }
 
 
-    var groupPath = this.getGroupPath();
+    var groupPath = this.getGroupPath(groupName);
     if (!fs.existsSync(groupPath)) {
         mkdirp.sync(groupPath);
     }
@@ -289,7 +291,7 @@ Mgr.prototype.minCss = function (cssFiles) {
 
 Mgr.prototype.parsePage = function (pageName) {
     // we don't need to cache the page right?...
-
+    log.debug(pageName);
     var pageConfig = this._config.pages[pageName];
     var pageFiles = [];
     var me = this;
