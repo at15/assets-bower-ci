@@ -202,9 +202,36 @@ Mgr.prototype.parsePage = function (pageName) {
         }
         pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
     }
-
-    return pageFiles;
+    this._pages[pageName] = pageFiles;
+    return this._pages[pageName];
 };
 
+// split files from their extension
+Mgr.prototype.splitFiles = function (files) {
+    var scripts = {js: [], css: []}
+};
+
+Mgr.prototype.toJSON = function (dst) {
+    var str_pages = JSON.stringify(this._pages);
+    try {
+        fs.writeFileSync(dst, str_pages);
+    } catch (e) {
+        log.error('can\'t save in json format!', e);
+    }
+};
+
+Mgr.prototype.parseAllPage = function () {
+    if (typeof this._config.pages !== 'object') {
+        log.error('config is not set! can\'t find any page!');
+        return;
+    }
+    var pages = this._config.pages;
+    var pageName;
+    for (pageName in pages) {
+        log.debug(pageName);
+        this.parsePage(pageName);
+    }
+    this.toJSON(this._config.dst);
+};
 
 module.exports = Mgr;

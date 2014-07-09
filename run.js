@@ -14,4 +14,6 @@ var mgr = new assetMgr('assets.json');
 
 //console.log(mgr.parseGroup('base'));
 
-console.log(mgr.parsePage('act'));
+//console.log(mgr.parsePage('act'));
+
+mgr.parseAllPage();
