@@ -19,7 +19,8 @@
         "vinyl": "latest",
         "log4js": "latest",
         "glob": "latest",
-        "bower": "latest"
+        "bower": "latest",
+        "mkdirp":"latest"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }

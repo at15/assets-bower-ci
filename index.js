@@ -164,14 +164,14 @@ Mgr.prototype.readBower = function (pkgName) {
 // copy bower files and keep the same structure
 Mgr.prototype.copyBower = function (bowerPkg) {
     console.log(bowerPkg);
-    var libPath = this.config('libpath');
+    var libPath = this.config('libpath') + '/' + bowerPkg.name;
     var bowerPath = path.resolve(this.getBowerPath(bowerPkg.name));
     var rPath;
     var dstPath;
-    bowerPkg.files.forEach(function(filePath){
-        rPath = path.relative(bowerPath,filePath);
-        dstPath = path.join(libPath,rPath);
-        tq.cp(filePath,dstPath);
+    bowerPkg.files.forEach(function (filePath) {
+        rPath = path.relative(bowerPath, filePath);
+        dstPath = path.join(libPath, rPath);
+        tq.cp(filePath, dstPath);
         console.log(rPath);
     });
 };

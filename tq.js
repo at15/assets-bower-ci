@@ -4,6 +4,7 @@
 var tq = {};
 var fs = require('fs');
 var path = require('path');
+var mkdirp = require('mkdirp');
 
 tq.inArray = function (arr, niddle) {
     var i, len = arr.length;
@@ -18,13 +19,13 @@ tq.inArray = function (arr, niddle) {
     return -1;
 };
 
+
 // copy file sync
 tq.cp = function (src, dst) {
     console.log('copy ' + src + ' to ' + dst);
-    if(!fs.exists(path.dirname(dst))){
-        fs.mkdirp
+    if (!fs.exists(path.dirname(dst))) {
+        mkdirp.sync(path.dirname(dst));
     }
-    var content = fs.readFileSync(src);
-    fs.writeFileSync(dst, content);
+    fs.writeFileSync(dst, fs.readFileSync(src));
 };
 module.exports = tq;

@@ -32,3 +32,5 @@ node_modules
 .idea/*
 
 bower_components
+
+site/*
