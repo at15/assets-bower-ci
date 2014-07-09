@@ -33,6 +33,20 @@ Mgr.prototype.setConfig = function (configPath) {
     }
 };
 
+Mgr.prototype.parseFile = function (fileGlob) {
+    var allFiles = [];
+    if (typeof fileGlob !== 'object') {
+        fileGlob = [fileGlob];
+    }
+    fileGlob.forEach(function (pattern) {
+        var files = glob.sync(pattern, {});
+        files.forEach(function (p) {
+            allFiles.push(path.resolve(p));
+        });
+    });
+    return allFiles;
+};
+
 Mgr.prototype.parseLib = function (libName) {
 
     if (typeof this._libs[libName] === 'object') {
@@ -60,15 +74,7 @@ Mgr.prototype.parseLib = function (libName) {
 
         // get all the files
         var fileGlob = this._config.libs[libName].files;
-        if (typeof fileGlob !== 'object') {
-            fileGlob = [fileGlob];
-        }
-        fileGlob.forEach(function (pattern) {
-            var files = glob.sync(pattern, {});
-            files.forEach(function (p) {
-                libFiles.push(path.resolve(p));
-            });
-        });
+        libFiles = this.mergeFiles(libFiles, this.parseFile(fileGlob));
     }
 
     if (libFiles.length === 0) {
@@ -103,25 +109,15 @@ Mgr.prototype.readBower = function (pkgName) {
     }
 
     //TODO: get the dependencies
-    // this.mergeFiles(libFiles)
-
-    var mainFilesGlob = bowerJson.main;
-    if (typeof mainFilesGlob !== 'object') {
-        mainFilesGlob = [mainFilesGlob];
-    }
 
     // change the directory
     var cwd = process.cwd();
     process.chdir('bower_components/' + pkgName);
 
-    mainFilesGlob.forEach(function (pattern) {
-        var files = glob.sync(pattern, {});
-        files.forEach(function (p) {
-            libFiles.push(path.resolve(p));
-        });
-    });
+    var mainFilesGlob = bowerJson.main;
+    libFiles = this.parseFile(mainFilesGlob);
 
-    // go back to the old dir
+    // go back to the previous dir
     process.chdir(cwd);
 
     this._libs[pkgName] = libFiles;
@@ -132,14 +128,31 @@ Mgr.prototype.readBower = function (pkgName) {
 Mgr.prototype.parseGroup = function (groupName) {
     // now we get the group
     var groupConfig = this._config.groups[groupName];
-    if(typeof groupConfig === 'object'){
-
+    var groupFiles = [];
+    if (typeof groupConfig === 'object') {
+        var me = this;
+        if (typeof groupConfig.libs === 'object') {
+            groupConfig.libs.forEach(function (libName) {
+                groupFiles = me.mergeFiles(groupFiles, me.parseLib(libName));
+            })
+        }
+        if (typeof groupConfig.files === 'object') {
+            var groupFileGlob = groupConfig.files;
+            groupFiles = this.mergeFiles(groupFiles, this.parseFile(groupFileGlob));
+        }
     }
-
+    if (groupFiles.length === 0) {
+        log.warn('Group: ' + groupName + ' is empty!');
+    }
+    return groupFiles;
 };
 
-Mgr.prototype.parsePage = function () {
-
+Mgr.prototype.parsePage = function (pageName) {
+    var pageConfig = this._config.pages[pageName];
+    var pageFiles = [];
+    if (typeof pageConfig === 'object') {
+        var me = this;
+    }
 };
 
 // TODO: do we already have function like this?

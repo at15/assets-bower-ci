@@ -13,7 +13,10 @@
         }
     },
     "groups":{
-
+        "base":{
+            "libs":["jquery","bootstrap"],
+            "files":[]
+        }
     }
 
 }

@@ -6,8 +6,8 @@ var mgr = new assetMgr('assets.json');
 //mgr.readBower('bootstrap');// bs's main don't need glob
 //mgr.readBower('fontawesome');// bs's main don't need glob
 
-//console.log(mgr.readBower('jquery'));
-//console.log(mgr.readBower('bootstrap'));
-//console.log(mgr.readBower('fontawesome'));
+console.log(mgr.readBower('jquery'));
+console.log(mgr.readBower('bootstrap'));
+console.log(mgr.readBower('fontawesome'));
 
-console.log(mgr.parseLib('date-time'));
+//console.log(mgr.parseLib('date-time'));
