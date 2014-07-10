@@ -86,22 +86,24 @@ Mgr.prototype.mergeFiles = function () {
 
 // if not loaded, push the libName to the loadedlibs
 Mgr.prototype.isLoaded = function (libName) {
+    log.debug('current loaded libs are')
+    console.log(this.currentLoadedLibs);
     if (-1 === tq.inArray(this.currentLoadedLibs, libName)) {
         return false;
     } else {
-        // this.currentLoadedLibs.push(libName);
         log.debug(libName + ' is in currentLoadedLibs');
         return true;
     }
 };
 
 Mgr.prototype.parseLib = function (libName) {
-    log.debug('Loading lib: ' + libName)
+    log.debug('Try to load lib: ' + libName);
     if (typeof this._libs[libName] === 'object') {
+        log.warn(libName + ' is parsed already!');
         return this._libs[libName];
     }
 
-
+    log.debug('Load ' + libName + ' for the first time');
     var libConfig = this._config.libs[libName];
     if (libConfig.bower) {
         var bowerPkg = this.readBower(libName);
@@ -117,6 +119,7 @@ Mgr.prototype.parseLib = function (libName) {
         if (typeof libConfig.dependencies === 'object') {
             var deps = libConfig.dependencies;
             var me = this;
+            log.debug('Loading dependencies for ' + libName);
             deps.forEach(function (d) {
                 if (!me.isLoaded(d)) {
                     libFiles = me.mergeFiles(libFiles, me.parseLib(d));
@@ -135,7 +138,9 @@ Mgr.prototype.parseLib = function (libName) {
 
 //    console.log(libFiles);
     this.currentLoadedLibs.push(libName);
+    console.log(this.currentLoadedLibs);
     this._libs[libName] = libFiles;
+    log.debug('load lib done!');
     return this._libs[libName];
 };
 
@@ -208,7 +213,6 @@ Mgr.prototype.parseLibsFiles = function (config) {
         if (typeof config.libs === 'object') {
             config.libs.forEach(function (libName) {
                 if (!me.isLoaded(libName)) {
-                    log.debug('Load ' + libName + ' for the first time');
                     allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
                 }
             })
@@ -320,10 +324,12 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof pageConfig === 'object') {
         var groups = pageConfig.groups;
         if (typeof groups === 'object') {
+            log.debug('Start loading groups for page ' + pageName);
             groups.forEach(function (groupName) {
                 pageFiles = me.mergeFiles(pageFiles, me.parseGroup(groupName));
             });
         }
+        log.debug('Start loading libs and files for page ' + pageName);
         pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
     }
     this._pages[pageName] = pageFiles;
