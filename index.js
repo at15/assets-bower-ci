@@ -26,6 +26,8 @@ Mgr.prototype.init = function () {
     this._libs = {};
     this._groups = {};
     this._pages = {};
+    // loaded libs don't need to load again
+    this.currentLoadedLibs = [];
 };
 
 Mgr.prototype.setConfig = function (configPath) {
@@ -82,6 +84,17 @@ Mgr.prototype.mergeFiles = function () {
     return merged;
 };
 
+// if not loaded, push the libName to the loadedlibs
+Mgr.prototype.isLoaded = function (libName) {
+    if (-1 === tq.inArray(this.currentLoadedLibs, libName)) {
+        log.debug(libName + ' is in currentLoadedLibs');
+        return false;
+    } else {
+        // this.currentLoadedLibs.push(libName);
+        return true;
+    }
+};
+
 Mgr.prototype.parseLib = function (libName) {
 
     if (typeof this._libs[libName] === 'object') {
@@ -92,6 +105,7 @@ Mgr.prototype.parseLib = function (libName) {
     var libConfig = this._config.libs[libName];
     if (libConfig.bower) {
         var bowerPkg = this.readBower(libName);
+        //console.log(bowerPkg);
         return this.copyBower(bowerPkg);
     }
 
@@ -104,7 +118,9 @@ Mgr.prototype.parseLib = function (libName) {
             var deps = libConfig.dependencies;
             var me = this;
             deps.forEach(function (d) {
-                libFiles = me.mergeFiles(libFiles, me.parseLib(d));
+                if (!me.isLoaded(d)) {
+                    libFiles = me.mergeFiles(libFiles, me.parseLib(d));
+                }
             });
         }
 
@@ -117,6 +133,8 @@ Mgr.prototype.parseLib = function (libName) {
         log.warn('Lib: ' + libName + ' is empty! ');
     }
 
+//    console.log(libFiles);
+    this.currentLoadedLibs.push(libName);
     this._libs[libName] = libFiles;
     return this._libs[libName];
 };
@@ -189,7 +207,9 @@ Mgr.prototype.parseLibsFiles = function (config) {
     if (typeof config.libs == 'object') {
         if (typeof config.libs === 'object') {
             config.libs.forEach(function (libName) {
-                allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
+                if (!me.isLoaded(libName)) {
+                    allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
+                }
             })
         }
         if (typeof config.files === 'object') {
@@ -228,6 +248,7 @@ Mgr.prototype.parseGroup = function (groupName) {
 
     if (groupFiles.length === 0) {
         log.warn('Group: ' + groupName + ' is empty!');
+        return [];
     }
 
 
@@ -305,6 +326,8 @@ Mgr.prototype.parsePage = function (pageName) {
         pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
     }
     this._pages[pageName] = pageFiles;
+    // clean up the loaded libs
+    this.currentLoadedLibs = [];
     return this._pages[pageName];
 };
 

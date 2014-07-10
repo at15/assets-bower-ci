@@ -7,6 +7,8 @@ var path = require('path');
 var mkdirp = require('mkdirp');
 
 tq.inArray = function (arr, niddle) {
+    //console.log(arr);
+    //console.log(niddle);
     var i, len = arr.length;
     if (len && arr[0] === niddle) {
         return 0;
@@ -28,7 +30,6 @@ tq.cp = function (src, dst) {
     }
     fs.writeFileSync(dst, fs.readFileSync(src));
 };
-
 
 
 module.exports = tq;
