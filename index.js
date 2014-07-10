@@ -48,42 +48,42 @@ Mgr.prototype.config = function (name) {
     }
 };
 
-Mgr.prototype.parseFile = function (fileGlob) {
-    var allFiles = [];
-    if (typeof fileGlob !== 'object') {
-        fileGlob = [fileGlob];
-    }
-    fileGlob.forEach(function (pattern) {
-        var files = glob.sync(pattern, {});
-        files.forEach(function (p) {
-            allFiles.push(path.resolve(p));
-        });
-    });
-    return allFiles;
-};
+//Mgr.prototype.parseFile = function (fileGlob) {
+//    var allFiles = [];
+//    if (typeof fileGlob !== 'object') {
+//        fileGlob = [fileGlob];
+//    }
+//    fileGlob.forEach(function (pattern) {
+//        var files = glob.sync(pattern, {});
+//        files.forEach(function (p) {
+//            allFiles.push(path.resolve(p));
+//        });
+//    });
+//    return allFiles;
+//};
 
 
-Mgr.prototype.mergeFiles = function () {
-    var arg = arguments;
-    var merged = [];
-
-    if (arg.length === 0) {
-        log.warn('Nothing provided for merge');
-        return merged;
-    }
-    var i, to_merge = arg.length;
-    for (i = 0; i < to_merge; i++) {
-        var scripts = arg[i];
-        var j, script_count = scripts.length;
-        for (j = 0; j < script_count; j++) {
-            var s = scripts[j];
-            if (-1 === tq.inArray(merged, s)) {
-                merged.push(s);
-            }
-        }
-    }
-    return merged;
-};
+//Mgr.prototype.mergeFiles = function () {
+//    var arg = arguments;
+//    var merged = [];
+//
+//    if (arg.length === 0) {
+//        log.warn('Nothing provided for merge');
+//        return merged;
+//    }
+//    var i, to_merge = arg.length;
+//    for (i = 0; i < to_merge; i++) {
+//        var scripts = arg[i];
+//        var j, script_count = scripts.length;
+//        for (j = 0; j < script_count; j++) {
+//            var s = scripts[j];
+//            if (-1 === tq.inArray(merged, s)) {
+//                merged.push(s);
+//            }
+//        }
+//    }
+//    return merged;
+//};
 
 // if not loaded, push the libName to the loadedlibs
 Mgr.prototype.isLoaded = function (libName) {
