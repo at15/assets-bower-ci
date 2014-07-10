@@ -273,20 +273,25 @@ Mgr.prototype.parseGroup = function (groupName) {
 Mgr.prototype.minFiles = function (files, dst) {
     // first split the files
     var scripts = this.splitFile(files);
+    var dstFiles = [];
 
     // write the js
-    var jsContent = this.minJs(scripts.js);
-    fs.writeFileSync(dst.js, jsContent);
-    dst.js = path.resolve(dst.js);
+    if (scripts.js.length) {
+        var jsContent = this.minJs(scripts.js);
+        fs.writeFileSync(dst.js, jsContent);
+        dst.js = path.resolve(dst.js);
+        dstFiles.push(dst.js);
+    }
 
-    // TODO: write the css
     // write the css
-    var cssContent = this.minCss(scripts.css);
-    fs.writeFileSync(dst.css, cssContent);
-    dst.css = path.resolve(dst.css);
+    if (scripts.css.length) {
+        var cssContent = this.minCss(scripts.css);
+        fs.writeFileSync(dst.css, cssContent);
+        dst.css = path.resolve(dst.css);
+        dstFiles.push(dst.css);
+    }
 
-    return [dst.js, dst.css];
-
+    return dstFiles;
 };
 
 Mgr.prototype.minJs = function (jsFiles) {
