@@ -18,14 +18,14 @@
     },
     "groups": {
         "base": {
-            "libs": ["jquery", "bootstrap"],
-            "files": []
+            "libs": ["jquery", "bootstrap"]
         }
     },
     "pages": {
         "act": {
             "groups": ["base"],
-            "libs": ["date-time"]
+            "libs": ["date-time"],
+            "files":["run.js"]
         }
     }
 

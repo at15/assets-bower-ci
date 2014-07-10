@@ -3,7 +3,8 @@
         "js": [
             "assets/group/base/base.min.js",
             "assets/lib/date-time/bootstrap-datetimepicker.js",
-            "assets/lib/date-time/moment.js"
+            "assets/lib/date-time/moment.js",
+            "../run.js"
         ],
         "css": [
             "assets/group/base/base.min.css",

@@ -209,18 +209,16 @@ Mgr.prototype.copyBower = function (bowerPkg) {
 Mgr.prototype.parseLibsFiles = function (config) {
     var allFiles = [];
     var me = this;
-    if (typeof config.libs == 'object') {
-        if (typeof config.libs === 'object') {
-            config.libs.forEach(function (libName) {
-                if (!me.isLoaded(libName)) {
-                    allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
-                }
-            })
-        }
-        if (typeof config.files === 'object') {
-            var fileGlob = config.files;
-            allFiles = this.mergeFiles(allFiles, this.parseFile(fileGlob));
-        }
+    if (typeof config.libs === 'object') {
+        config.libs.forEach(function (libName) {
+            if (!me.isLoaded(libName)) {
+                allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
+            }
+        })
+    }
+    if (typeof config.files === 'object') {
+        var fileGlob = config.files;
+        allFiles = this.mergeFiles(allFiles, this.parseFile(fileGlob));
     }
     return allFiles;
 };
@@ -284,10 +282,10 @@ Mgr.prototype.minFiles = function (files, dst) {
     // TODO: write the css
     // write the css
     var cssContent = this.minCss(scripts.css);
-    fs.writeFileSync(dst.css,cssContent);
+    fs.writeFileSync(dst.css, cssContent);
     dst.css = path.resolve(dst.css);
 
-    return [dst.js,dst.css];
+    return [dst.js, dst.css];
 
 };
 
@@ -305,12 +303,12 @@ Mgr.prototype.minJs = function (jsFiles) {
 
 Mgr.prototype.minCss = function (cssFiles) {
     var content = '';
-    cssFiles.forEach(function(p){
-        if(path.extname(p) === '.css'){
+    cssFiles.forEach(function (p) {
+        if (path.extname(p) === '.css') {
             content += fs.readFileSync(p);
         }
     });
-    var minify =  new CleanCSS().minify(content);
+    var minify = new CleanCSS().minify(content);
     return minify;
 };
 
