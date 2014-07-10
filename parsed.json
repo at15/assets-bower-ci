@@ -1,8 +1,8 @@
 {
     "act": [
-        "/vagrant/assets-bower-ci/site/assets/group/base/base.min.js",
-        "/vagrant/assets-bower-ci/site/assets/lib/date-time/bootstrap-datetimepicker.css",
-        "/vagrant/assets-bower-ci/site/assets/lib/date-time/bootstrap-datetimepicker.js",
-        "/vagrant/assets-bower-ci/site/assets/lib/date-time/moment.js"
+        "assets/group/base/base.min.js",
+        "assets/lib/date-time/bootstrap-datetimepicker.css",
+        "assets/lib/date-time/bootstrap-datetimepicker.js",
+        "assets/lib/date-time/moment.js"
     ]
 }

@@ -331,6 +331,7 @@ Mgr.prototype.parsePage = function (pageName) {
         log.debug('Start loading libs and files for page ' + pageName);
         pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
     }
+    pageFiles = this.resolveIndex(pageFiles);
     this._pages[pageName] = pageFiles;
     // clean up the loaded libs
     this.currentLoadedLibs = [];
@@ -345,6 +346,20 @@ Mgr.prototype.toJSON = function (dst) {
     } catch (e) {
         log.error('can\'t save in json format!', e);
     }
+};
+
+// resolve the absolute path to relative path to the index.php
+Mgr.prototype.resolveIndex = function (files) {
+    var resolvedPath = [];
+    var webroot = this.config('webroot');
+    if (typeof webroot === 'undefined') {
+        log.error('Webroot is undefined!');
+        return files;
+    }
+    files.forEach(function (p) {
+        resolvedPath.push(path.relative(webroot, p))
+    });
+    return resolvedPath;
 };
 
 Mgr.prototype.parseAllPage = function () {
