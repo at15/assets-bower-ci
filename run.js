@@ -23,4 +23,11 @@ var mgr = new assetMgr('assets.json');
 
 //console.log(mgr.parseLib('date-time'));
 
-console.log(mgr.parsePage('act'));
+//console.log(mgr.parsePage('act'));
+
+//console.log(mgr.parseLib('date-time'));
+
+
+//console.log(mgr.parsePage('act'));
+
+mgr.parseAllPage();

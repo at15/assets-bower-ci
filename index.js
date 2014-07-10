@@ -87,16 +87,16 @@ Mgr.prototype.mergeFiles = function () {
 // if not loaded, push the libName to the loadedlibs
 Mgr.prototype.isLoaded = function (libName) {
     if (-1 === tq.inArray(this.currentLoadedLibs, libName)) {
-        log.debug(libName + ' is in currentLoadedLibs');
         return false;
     } else {
         // this.currentLoadedLibs.push(libName);
+        log.debug(libName + ' is in currentLoadedLibs');
         return true;
     }
 };
 
 Mgr.prototype.parseLib = function (libName) {
-
+    log.debug('Loading lib: ' + libName)
     if (typeof this._libs[libName] === 'object') {
         return this._libs[libName];
     }
@@ -208,6 +208,7 @@ Mgr.prototype.parseLibsFiles = function (config) {
         if (typeof config.libs === 'object') {
             config.libs.forEach(function (libName) {
                 if (!me.isLoaded(libName)) {
+                    log.debug('Load ' + libName + ' for the first time');
                     allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
                 }
             })
@@ -227,7 +228,7 @@ Mgr.prototype.getGroupPath = function (groupName) {
 
 
 Mgr.prototype.parseGroup = function (groupName) {
-    log.debug(groupName);
+    log.debug('Parse group: ' + groupName);
 
     // now we get the group
     if (typeof this._groups[groupName] === 'object') {
@@ -312,7 +313,7 @@ Mgr.prototype.minCss = function (cssFiles) {
 
 Mgr.prototype.parsePage = function (pageName) {
     // we don't need to cache the page right?...
-    log.debug(pageName);
+    log.debug('Parse page: ' + pageName);
     var pageConfig = this._config.pages[pageName];
     var pageFiles = [];
     var me = this;
@@ -333,7 +334,7 @@ Mgr.prototype.parsePage = function (pageName) {
 
 
 Mgr.prototype.toJSON = function (dst) {
-    var str_pages = JSON.stringify(this._pages);
+    var str_pages = JSON.stringify(this._pages, null, 4);
     try {
         fs.writeFileSync(dst, str_pages);
     } catch (e) {
