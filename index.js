@@ -148,44 +148,44 @@ Mgr.prototype.getBowerPath = function (pkgName) {
     return 'bower_components/' + pkgName;
 };
 
-Mgr.prototype.readBower = function (pkgName) {
-
-    // final files in absolute path
-    var libFiles = [];
-    var bowerPath = this.getBowerPath(pkgName);
-    var bowerJsonPath = bowerPath + '/bower.json';
-    var bowerJson = {};
-    try {
-        bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
-    } catch (e) {
-        // need to try .bower.json
-        bowerJsonPath = bowerPath + '/.bower.json';
-        try {
-            bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
-        } catch (e) {
-            log.error('Can\'t read bower.json! ' + bowerJsonPath);
-            return libFiles;
-        }
-    }
-
-    //TODO: get the dependencies
-
-    // change the directory
-    var cwd = process.cwd();
-    process.chdir(bowerPath);
-
-    var mainFilesGlob = bowerJson.main;
-    libFiles = this.parseFile(mainFilesGlob);
-
-    // go back to the previous dir
-    process.chdir(cwd);
-
-    return {
-        files: libFiles,
-        name: pkgName
-    };
-
-};
+//Mgr.prototype.readBower = function (pkgName) {
+//
+//    // final files in absolute path
+//    var libFiles = [];
+//    var bowerPath = this.getBowerPath(pkgName);
+//    var bowerJsonPath = bowerPath + '/bower.json';
+//    var bowerJson = {};
+//    try {
+//        bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
+//    } catch (e) {
+//        // need to try .bower.json
+//        bowerJsonPath = bowerPath + '/.bower.json';
+//        try {
+//            bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
+//        } catch (e) {
+//            log.error('Can\'t read bower.json! ' + bowerJsonPath);
+//            return libFiles;
+//        }
+//    }
+//
+//    //TODO: get the dependencies
+//
+//    // change the directory
+//    var cwd = process.cwd();
+//    process.chdir(bowerPath);
+//
+//    var mainFilesGlob = bowerJson.main;
+//    libFiles = this.parseFile(mainFilesGlob);
+//
+//    // go back to the previous dir
+//    process.chdir(cwd);
+//
+//    return {
+//        files: libFiles,
+//        name: pkgName
+//    };
+//
+//};
 
 // copy bower files and keep the same structure
 Mgr.prototype.copyBower = function (bowerPkg) {

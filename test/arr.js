@@ -3,7 +3,7 @@
  */
 // test the arr.js
 require("should");
-var arr = require('../arr');
+var arr = require('../lib/arr');
 
 describe('arr.inArray', function () {
     var a = [1, 2, 3, 4];

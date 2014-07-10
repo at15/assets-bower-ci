@@ -1,5 +1,5 @@
 require('should');
-var file = require('../file');
+var file = require('../lib/file-helper');
 var path = require('path');
 
 describe('file.glob', function () {
@@ -17,3 +17,5 @@ describe('file.glob', function () {
 //        arr.inArray(a, 10086).should.eql(-1);
 //    });
 });
+
+// TODO:test the cp .... how to test that....
