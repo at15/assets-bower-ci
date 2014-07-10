@@ -104,6 +104,8 @@ Mgr.prototype.parseLib = function (libName) {
     }
 
     log.debug('Load ' + libName + ' for the first time');
+    this.currentLoadedLibs.push(libName);
+
     var libConfig = this._config.libs[libName];
     if (libConfig.bower) {
         var bowerPkg = this.readBower(libName);
@@ -136,9 +138,6 @@ Mgr.prototype.parseLib = function (libName) {
         log.warn('Lib: ' + libName + ' is empty! ');
     }
 
-//    console.log(libFiles);
-    this.currentLoadedLibs.push(libName);
-    console.log(this.currentLoadedLibs);
     this._libs[libName] = libFiles;
     log.debug('load lib done!');
     return this._libs[libName];

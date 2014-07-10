@@ -1,14 +1,6 @@
 {
     "act": [
         "/vagrant/assets-bower-ci/site/assets/group/base/base.min.js",
-        "/vagrant/assets-bower-ci/site/assets/lib/jquery/dist/jquery.js",
-        "/vagrant/assets-bower-ci/site/assets/lib/bootstrap/less/bootstrap.less",
-        "/vagrant/assets-bower-ci/site/assets/lib/bootstrap/dist/css/bootstrap.css",
-        "/vagrant/assets-bower-ci/site/assets/lib/bootstrap/dist/js/bootstrap.js",
-        "/vagrant/assets-bower-ci/site/assets/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
-        "/vagrant/assets-bower-ci/site/assets/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
-        "/vagrant/assets-bower-ci/site/assets/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
-        "/vagrant/assets-bower-ci/site/assets/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
         "/vagrant/assets-bower-ci/site/assets/lib/date-time/bootstrap-datetimepicker.css",
         "/vagrant/assets-bower-ci/site/assets/lib/date-time/bootstrap-datetimepicker.js",
         "/vagrant/assets-bower-ci/site/assets/lib/date-time/moment.js"
