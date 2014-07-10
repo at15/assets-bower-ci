@@ -16,12 +16,12 @@
         "url": "https://github.com/at15/assets-bower-ci/issues"
     },
     "dependencies": {
-        "vinyl": "latest",
         "log4js": "latest",
         "glob": "latest",
         "bower": "latest",
         "mkdirp":"latest",
-        "uglify-js":"latest"
+        "uglify-js":"latest",
+        "clean-css":"latest"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }

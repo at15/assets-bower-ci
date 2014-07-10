@@ -3,6 +3,7 @@ var path = require('path');
 var glob = require('glob');
 var tq = require('./tq');
 var mkdirp = require('mkdirp');
+var CleanCSS = require('clean-css');
 
 var log4js = require('log4js');
 log4js.configure({appenders: [
@@ -273,28 +274,20 @@ Mgr.prototype.parseGroup = function (groupName) {
 
 Mgr.prototype.minFiles = function (files, dst) {
     // first split the files
-    var jsFiles = [];
-    var cssFiles = [];
-    files.forEach(function (p) {
-        var ext = path.extname(p);
-        if (ext === '.js') {
-            jsFiles.push(p);
-        }
-        if (ext === '.css') {
-            cssFiles.push(p);
-        }
-    });
+    var scripts = this.splitFile(files);
 
     // write the js
-    var jsContent = this.minJs(jsFiles);
+    var jsContent = this.minJs(scripts.js);
     fs.writeFileSync(dst.js, jsContent);
     dst.js = path.resolve(dst.js);
 
     // TODO: write the css
     // write the css
+    var cssContent = this.minCss(scripts.css);
+    fs.writeFileSync(dst.css,cssContent);
+    dst.css = path.resolve(dst.css);
 
-
-    return [dst.js];
+    return [dst.js,dst.css];
 
 };
 
@@ -311,7 +304,46 @@ Mgr.prototype.minJs = function (jsFiles) {
 };
 
 Mgr.prototype.minCss = function (cssFiles) {
+    var content = '';
+    cssFiles.forEach(function(p){
+        if(path.extname(p) === '.css'){
+            content += fs.readFileSync(p);
+        }
+    });
+    var minify =  new CleanCSS().minify(content);
+    return minify;
+};
 
+// resolve the absolute path to relative path to the index.php
+Mgr.prototype.resolveIndex = function (files) {
+    var resolvedPath = [];
+    var webroot = this.config('webroot');
+    if (typeof webroot === 'undefined') {
+        log.error('Webroot is undefined!');
+        return files;
+    }
+    files.forEach(function (p) {
+        resolvedPath.push(path.relative(webroot, p))
+    });
+    return resolvedPath;
+};
+
+Mgr.prototype.splitFile = function (files) {
+    var scripts = {js: [], css: []};
+    var jsFiles = [];
+    var cssFiles = [];
+    files.forEach(function (p) {
+        var ext = path.extname(p);
+        if (ext === '.js') {
+            jsFiles.push(p);
+        }
+        if (ext === '.css') {
+            cssFiles.push(p);
+        }
+    });
+    scripts.js = jsFiles;
+    scripts.css = cssFiles;
+    return scripts;
 };
 
 Mgr.prototype.parsePage = function (pageName) {
@@ -332,6 +364,7 @@ Mgr.prototype.parsePage = function (pageName) {
         pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
     }
     pageFiles = this.resolveIndex(pageFiles);
+    pageFiles = this.splitFile(pageFiles);
     this._pages[pageName] = pageFiles;
     // clean up the loaded libs
     this.currentLoadedLibs = [];
@@ -348,19 +381,6 @@ Mgr.prototype.toJSON = function (dst) {
     }
 };
 
-// resolve the absolute path to relative path to the index.php
-Mgr.prototype.resolveIndex = function (files) {
-    var resolvedPath = [];
-    var webroot = this.config('webroot');
-    if (typeof webroot === 'undefined') {
-        log.error('Webroot is undefined!');
-        return files;
-    }
-    files.forEach(function (p) {
-        resolvedPath.push(path.relative(webroot, p))
-    });
-    return resolvedPath;
-};
 
 Mgr.prototype.parseAllPage = function () {
     if (typeof this._config.pages !== 'object') {

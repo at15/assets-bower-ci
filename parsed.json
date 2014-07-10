@@ -1,8 +1,13 @@
 {
-    "act": [
-        "assets/group/base/base.min.js",
-        "assets/lib/date-time/bootstrap-datetimepicker.css",
-        "assets/lib/date-time/bootstrap-datetimepicker.js",
-        "assets/lib/date-time/moment.js"
-    ]
+    "act": {
+        "js": [
+            "assets/group/base/base.min.js",
+            "assets/lib/date-time/bootstrap-datetimepicker.js",
+            "assets/lib/date-time/moment.js"
+        ],
+        "css": [
+            "assets/group/base/base.min.css",
+            "assets/lib/date-time/bootstrap-datetimepicker.css"
+        ]
+    }
 }
