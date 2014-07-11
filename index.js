@@ -48,42 +48,7 @@ Mgr.prototype.config = function (name) {
     }
 };
 
-//Mgr.prototype.parseFile = function (fileGlob) {
-//    var allFiles = [];
-//    if (typeof fileGlob !== 'object') {
-//        fileGlob = [fileGlob];
-//    }
-//    fileGlob.forEach(function (pattern) {
-//        var files = glob.sync(pattern, {});
-//        files.forEach(function (p) {
-//            allFiles.push(path.resolve(p));
-//        });
-//    });
-//    return allFiles;
-//};
 
-
-//Mgr.prototype.mergeFiles = function () {
-//    var arg = arguments;
-//    var merged = [];
-//
-//    if (arg.length === 0) {
-//        log.warn('Nothing provided for merge');
-//        return merged;
-//    }
-//    var i, to_merge = arg.length;
-//    for (i = 0; i < to_merge; i++) {
-//        var scripts = arg[i];
-//        var j, script_count = scripts.length;
-//        for (j = 0; j < script_count; j++) {
-//            var s = scripts[j];
-//            if (-1 === tq.inArray(merged, s)) {
-//                merged.push(s);
-//            }
-//        }
-//    }
-//    return merged;
-//};
 
 // if not loaded, push the libName to the loadedlibs
 Mgr.prototype.isLoaded = function (libName) {
@@ -148,61 +113,23 @@ Mgr.prototype.getBowerPath = function (pkgName) {
     return 'bower_components/' + pkgName;
 };
 
-//Mgr.prototype.readBower = function (pkgName) {
-//
-//    // final files in absolute path
-//    var libFiles = [];
-//    var bowerPath = this.getBowerPath(pkgName);
-//    var bowerJsonPath = bowerPath + '/bower.json';
-//    var bowerJson = {};
-//    try {
-//        bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
-//    } catch (e) {
-//        // need to try .bower.json
-//        bowerJsonPath = bowerPath + '/.bower.json';
-//        try {
-//            bowerJson = JSON.parse(fs.readFileSync(bowerJsonPath));
-//        } catch (e) {
-//            log.error('Can\'t read bower.json! ' + bowerJsonPath);
-//            return libFiles;
-//        }
-//    }
-//
-//    //TODO: get the dependencies
-//
-//    // change the directory
-//    var cwd = process.cwd();
-//    process.chdir(bowerPath);
-//
-//    var mainFilesGlob = bowerJson.main;
-//    libFiles = this.parseFile(mainFilesGlob);
-//
-//    // go back to the previous dir
-//    process.chdir(cwd);
-//
-//    return {
-//        files: libFiles,
-//        name: pkgName
-//    };
-//
-//};
 
-// copy bower files and keep the same structure
-Mgr.prototype.copyBower = function (bowerPkg) {
-//    console.log(bowerPkg);
-    var libPath = this.config('libpath') + '/' + bowerPkg.name;
-    var bowerPath = path.resolve(this.getBowerPath(bowerPkg.name));
-    var rPath;
-    var dstPath;
-    var allFiles = [];
-    bowerPkg.files.forEach(function (filePath) {
-        rPath = path.relative(bowerPath, filePath);
-        dstPath = path.join(libPath, rPath);
-        tq.cp(filePath, dstPath);
-        allFiles.push(path.resolve(dstPath));
-    });
-    return allFiles;
-};
+//// copy bower files and keep the same structure
+//Mgr.prototype.copyBower = function (bowerPkg) {
+////    console.log(bowerPkg);
+//    var libPath = this.config('libpath') + '/' + bowerPkg.name;
+//    var bowerPath = path.resolve(this.getBowerPath(bowerPkg.name));
+//    var rPath;
+//    var dstPath;
+//    var allFiles = [];
+//    bowerPkg.files.forEach(function (filePath) {
+//        rPath = path.relative(bowerPath, filePath);
+//        dstPath = path.join(libPath, rPath);
+//        tq.cp(filePath, dstPath);
+//        allFiles.push(path.resolve(dstPath));
+//    });
+//    return allFiles;
+//};
 
 // TODO: parse lib should also behave like parse file, which can accept both array and string?
 // no ... just one thing at a time

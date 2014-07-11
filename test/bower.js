@@ -15,11 +15,15 @@ describe('bower-helper.read', function () {
         pkg.files.should.eql([jqjs]);
         pkg.files.length.should.eql(1);
     });
-//    it('return sth when found sth', function () {
-//        var t = [
-//            path.resolve('test/glob/a.js'),
-//            path.resolve('test/glob/t.js')
-//        ];
-//        file.glob('test/glob/*.js').should.eql(t);
-//    });
+});
+
+describe('bower-helper.copy', function () {
+    it('return empty when copy nothing', function () {
+        var pkg = bower.read('phpmyadmin');
+        bower.copy(pkg, 'site/lib').should.eql([]);
+    });
+    it('copy jquery', function () {
+        var pkg = bower.read('jquery');
+        bower.copy(pkg,'site/lib').should.eql([path.resolve('site/lib/jquery/dist/jquery.js')]);
+    });
 });
