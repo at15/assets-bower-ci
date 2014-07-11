@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
-var tq = require('./tq');
 var mkdirp = require('mkdirp');
 
 
@@ -13,7 +12,9 @@ log4js.configure({appenders: [
 var log = log4js.getLogger();
 log.setLevel('DEBUG');
 
-
+var arrh = require('./lib/arr');
+var bowerh = require('./lib/bower-helper');
+var fileh = require('./lib/file-helper');
 
 
 function Mgr(configPath) {
@@ -48,12 +49,11 @@ Mgr.prototype.config = function (name) {
 };
 
 
-
 // if not loaded, push the libName to the loadedlibs
 Mgr.prototype.isLoaded = function (libName) {
-    log.debug('current loaded libs are')
+    log.debug('current loaded libs are');
     console.log(this.currentLoadedLibs);
-    if (-1 === tq.inArray(this.currentLoadedLibs, libName)) {
+    if (-1 === arrh.inArray(this.currentLoadedLibs, libName)) {
         return false;
     } else {
         log.debug(libName + ' is in currentLoadedLibs');
@@ -62,6 +62,7 @@ Mgr.prototype.isLoaded = function (libName) {
 };
 
 Mgr.prototype.parseLib = function (libName) {
+
     log.debug('Try to load lib: ' + libName);
     if (typeof this._libs[libName] === 'object') {
         log.warn(libName + ' is parsed already!');
@@ -73,31 +74,31 @@ Mgr.prototype.parseLib = function (libName) {
 
     var libConfig = this._config.libs[libName];
     if (libConfig.bower) {
-        var bowerPkg = this.readBower(libName);
-        //console.log(bowerPkg);
-        return this.copyBower(bowerPkg);
+        var bowerPkg = bowerh.read(libName);
+        return bowerh.copy(bowerPkg);
     }
 
     var libFiles = [];
 
-    if (typeof libConfig === 'object') {
-
-        // get all the dependencies
-        if (typeof libConfig.dependencies === 'object') {
-            var deps = libConfig.dependencies;
-            var me = this;
-            log.debug('Loading dependencies for ' + libName);
-            deps.forEach(function (d) {
-                if (!me.isLoaded(d)) {
-                    libFiles = me.mergeFiles(libFiles, me.parseLib(d));
-                }
-            });
-        }
-
-        // get all the files
-        var fileGlob = this._config.libs[libName].files;
-        libFiles = this.mergeFiles(libFiles, this.parseFile(fileGlob));
+    if (typeof libConfig !== 'object') {
+        log.warn('libConfig for lib ' + libName + ' is not object!');
+        return libFiles;
     }
+    // get all the dependencies
+    if (typeof libConfig.dependencies === 'object') {
+        var deps = libConfig.dependencies;
+        var me = this;
+        log.debug('Loading dependencies for ' + libName);
+        deps.forEach(function (d) {
+            if (!me.isLoaded(d)) {
+                libFiles = arrh.merge(libFiles, me.parseLib(d));
+            }
+        });
+    }
+
+    // get all the files
+    var fileGlob = libConfig.files;
+    libFiles = arrh.merge(libFiles, fileh.glob(fileGlob));
 
     if (libFiles.length === 0) {
         log.warn('Lib: ' + libName + ' is empty! ');
@@ -117,13 +118,13 @@ Mgr.prototype.parseLibsFiles = function (config) {
     if (typeof config.libs === 'object') {
         config.libs.forEach(function (libName) {
             if (!me.isLoaded(libName)) {
-                allFiles = me.mergeFiles(allFiles, me.parseLib(libName));
+                allFiles = arrh.merge(allFiles, me.parseLib(libName));
             }
         })
     }
     if (typeof config.files === 'object') {
         var fileGlob = config.files;
-        allFiles = this.mergeFiles(allFiles, this.parseFile(fileGlob));
+        allFiles = arrh.merge(allFiles, this.parseFile(fileGlob));
     }
     return allFiles;
 };
@@ -199,60 +200,6 @@ Mgr.prototype.minFiles = function (files, dst) {
     return dstFiles;
 };
 
-Mgr.prototype.minJs = function (jsFiles) {
-    var realJsFiles = [];
-    jsFiles.forEach(function (p) {
-        if (path.extname(p) === '.js') {
-            realJsFiles.push(p);
-        }
-    });
-    var result = UglifyJS.minify(realJsFiles);
-    // console.log(result.code);
-    return result.code;
-};
-
-Mgr.prototype.minCss = function (cssFiles) {
-    var content = '';
-    cssFiles.forEach(function (p) {
-        if (path.extname(p) === '.css') {
-            content += fs.readFileSync(p);
-        }
-    });
-    var minify = new CleanCSS().minify(content);
-    return minify;
-};
-
-// resolve the absolute path to relative path to the index.php
-Mgr.prototype.resolveIndex = function (files) {
-    var resolvedPath = [];
-    var webroot = this.config('webroot');
-    if (typeof webroot === 'undefined') {
-        log.error('Webroot is undefined!');
-        return files;
-    }
-    files.forEach(function (p) {
-        resolvedPath.push(path.relative(webroot, p))
-    });
-    return resolvedPath;
-};
-
-Mgr.prototype.splitFile = function (files) {
-    var scripts = {js: [], css: []};
-    var jsFiles = [];
-    var cssFiles = [];
-    files.forEach(function (p) {
-        var ext = path.extname(p);
-        if (ext === '.js') {
-            jsFiles.push(p);
-        }
-        if (ext === '.css') {
-            cssFiles.push(p);
-        }
-    });
-    scripts.js = jsFiles;
-    scripts.css = cssFiles;
-    return scripts;
-};
 
 Mgr.prototype.parsePage = function (pageName) {
     // we don't need to cache the page right?...
