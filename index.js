@@ -1,8 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-var glob = require('glob');
 var mkdirp = require('mkdirp');
-
 
 var log4js = require('log4js');
 log4js.configure({appenders: [
