@@ -5,12 +5,15 @@
     "dst": "parsed.json",
     "libs": {
         "jquery": {
+            "name":"jquery",
             "bower": true
         },
         "bootstrap": {
+            "name":"bootstrap",
             "bower": true
         },
         "date-time": {
+            "name":"date-time",
             "bower": false,
             "files": ["site/assets/lib/date-time/*.*"],
             "dependencies": ["jquery", "bootstrap"]
@@ -18,11 +21,13 @@
     },
     "groups": {
         "base": {
+            "name":"base",
             "libs": ["jquery", "bootstrap"]
         }
     },
     "pages": {
         "act": {
+            "name":"act",
             "groups": ["base"],
             "libs": ["date-time"],
             "files":["run.js"]

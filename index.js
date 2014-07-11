@@ -71,36 +71,10 @@ Mgr.prototype.parseLib = function (libName) {
     this.currentLoadedLibs.push(libName);
 
     var libConfig = this._config.libs[libName];
-    if (libConfig.bower) {
-        var bowerPkg = bowerh.read(libName);
-        return bowerh.copy(bowerPkg);
-    }
 
-    var libFiles = [];
-
-    if (typeof libConfig !== 'object') {
-        log.warn('libConfig for lib ' + libName + ' is not object!');
-        return libFiles;
-    }
-    // get all the dependencies
-    if (typeof libConfig.dependencies === 'object') {
-        var deps = libConfig.dependencies;
-        var me = this;
-        log.debug('Loading dependencies for ' + libName);
-        deps.forEach(function (d) {
-            if (!me.isLoaded(d)) {
-                libFiles = arrh.merge(libFiles, me.parseLib(d));
-            }
-        });
-    }
-
-    // get all the files
-    var fileGlob = libConfig.files;
-    libFiles = arrh.merge(libFiles, fileh.glob(fileGlob));
-
-    if (libFiles.length === 0) {
-        log.warn('Lib: ' + libName + ' is empty! ');
-    }
+//    if (libFiles.length === 0) {
+//        log.warn('Lib: ' + libName + ' is empty! ');
+//    }
 
     this._libs[libName] = libFiles;
     log.debug('load lib done!');
