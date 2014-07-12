@@ -13,9 +13,10 @@ describe('file.glob', function () {
         ];
         file.glob('test/glob/*.js').should.eql(t);
     });
-//    it('return -1 when can\'t find element', function () {
-//        arr.inArray(a, 10086).should.eql(-1);
-//    });
+    it('can split file', function () {
+        file.split(file.glob('test/glob/*.*'),'css')
+            .should.eql([path.resolve('test/glob/a.css')]);
+    });
 });
 
 // TODO:test the cp .... how to test that....

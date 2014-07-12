@@ -1,19 +1,9 @@
 var fs = require('fs');
 var path = require('path');
-var mkdirp = require('mkdirp');
 
-var log4js = require('log4js');
-log4js.configure({appenders: [
-    { type: 'console' }
-]
-});
-var log = log4js.getLogger();
-log.setLevel('DEBUG');
-
+var log = require('./lib/log');
 var arrh = require('./lib/arr');
-var bowerh = require('./lib/bower-helper');
-var fileh = require('./lib/file-helper');
-
+var Parser = require('./lib/parse');
 
 function Mgr(configPath) {
     this.init();
@@ -22,11 +12,7 @@ function Mgr(configPath) {
 
 Mgr.prototype.init = function () {
     this._config = {};
-    this._libs = {};
-    this._groups = {};
     this._pages = {};
-    // loaded libs don't need to load again
-    this.currentLoadedLibs = [];
 };
 
 Mgr.prototype.setConfig = function (configPath) {
@@ -46,155 +32,35 @@ Mgr.prototype.config = function (name) {
     }
 };
 
-
-// if not loaded, push the libName to the loadedlibs
-Mgr.prototype.isLoaded = function (libName) {
-    log.debug('current loaded libs are');
-    console.log(this.currentLoadedLibs);
-    if (-1 === arrh.inArray(this.currentLoadedLibs, libName)) {
-        return false;
-    } else {
-        log.debug(libName + ' is in currentLoadedLibs');
-        return true;
-    }
-};
-
-Mgr.prototype.parseLib = function (libName) {
-
-    log.debug('Try to load lib: ' + libName);
-    if (typeof this._libs[libName] === 'object') {
-        log.warn(libName + ' is parsed already!');
-        return this._libs[libName];
-    }
-
-    log.debug('Load ' + libName + ' for the first time');
-    this.currentLoadedLibs.push(libName);
-
-    var libConfig = this._config.libs[libName];
-
-//    if (libFiles.length === 0) {
-//        log.warn('Lib: ' + libName + ' is empty! ');
-//    }
-
-    this._libs[libName] = libFiles;
-    log.debug('load lib done!');
-    return this._libs[libName];
-};
-
-
-// TODO: parse lib should also behave like parse file, which can accept both array and string?
-// no ... just one thing at a time
-Mgr.prototype.parseLibsFiles = function (config) {
-    var allFiles = [];
-    var me = this;
-    if (typeof config.libs === 'object') {
-        config.libs.forEach(function (libName) {
-            if (!me.isLoaded(libName)) {
-                allFiles = arrh.merge(allFiles, me.parseLib(libName));
-            }
-        })
-    }
-    if (typeof config.files === 'object') {
-        var fileGlob = config.files;
-        allFiles = arrh.merge(allFiles, this.parseFile(fileGlob));
-    }
-    return allFiles;
-};
-
-
-Mgr.prototype.getGroupPath = function (groupName) {
-    return this.config('grouppath') + '/' + groupName;
-};
-
-
-Mgr.prototype.parseGroup = function (groupName) {
-    log.debug('Parse group: ' + groupName);
-
-    // now we get the group
-    if (typeof this._groups[groupName] === 'object') {
-        return this._groups[groupName];
-    }
-
-    var groupConfig = this._config.groups[groupName];
-    var groupFiles = [];
-
-    if (typeof groupConfig === 'undefined') {
-        log.error('Undefined group name! ');
-        return groupFiles;
-    }
-
-    if (typeof groupConfig === 'object') {
-        groupFiles = this.parseLibsFiles(groupConfig);
-    }
-
-    if (groupFiles.length === 0) {
-        log.warn('Group: ' + groupName + ' is empty!');
-        return [];
-    }
-
-
-    var groupPath = this.getGroupPath(groupName);
-    if (!fs.existsSync(groupPath)) {
-        mkdirp.sync(groupPath);
-    }
-
-    var dst = {
-        js: groupPath + '/' + groupName + '.min.js',
-        css: groupPath + '/' + groupName + '.min.css'
-    };
-    groupFiles = this.minFiles(groupFiles, dst);
-    this._groups[groupName] = groupFiles;
-    return this._groups[groupName];
-};
-
-
-Mgr.prototype.minFiles = function (files, dst) {
-    // first split the files
-    var scripts = this.splitFile(files);
-    var dstFiles = [];
-
-    // write the js
-    if (scripts.js.length) {
-        var jsContent = this.minJs(scripts.js);
-        fs.writeFileSync(dst.js, jsContent);
-        dst.js = path.resolve(dst.js);
-        dstFiles.push(dst.js);
-    }
-
-    // write the css
-    if (scripts.css.length) {
-        var cssContent = this.minCss(scripts.css);
-        fs.writeFileSync(dst.css, cssContent);
-        dst.css = path.resolve(dst.css);
-        dstFiles.push(dst.css);
-    }
-
-    return dstFiles;
-};
-
-
 Mgr.prototype.parsePage = function (pageName) {
     // we don't need to cache the page right?...
     log.debug('Parse page: ' + pageName);
     var pageConfig = this._config.pages[pageName];
+
+    if (typeof pageConfig !== 'object') {
+    }
     var pageFiles = [];
     var me = this;
-    if (typeof pageConfig === 'object') {
-        var groups = pageConfig.groups;
-        if (typeof groups === 'object') {
-            log.debug('Start loading groups for page ' + pageName);
-            groups.forEach(function (groupName) {
-                pageFiles = me.mergeFiles(pageFiles, me.parseGroup(groupName));
-            });
-        }
-        log.debug('Start loading libs and files for page ' + pageName);
-        pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
+
+    var parse = new Parser({
+        dstFolder: 'site',
+        libConfigs: this._config.libs,
+        groupConfigs: this._config.groups
+    });
+
+    var groups = pageConfig.groups;
+    if (typeof groups === 'object') {
+        log.debug('Start loading groups for page ' + pageName);
+        groups.forEach(function (groupName) {
+            pageFiles = me.mergeFiles(pageFiles, me.parseGroup(groupName));
+        });
     }
+    log.debug('Start loading libs and files for page ' + pageName);
+    pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
+
     pageFiles = this.resolveIndex(pageFiles);
     pageFiles = this.splitFile(pageFiles);
     this._pages[pageName] = pageFiles;
-    // clean up the loaded libs
-    this.currentLoadedLibs = [];
     return this._pages[pageName];
 };
 
