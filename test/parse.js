@@ -1,11 +1,18 @@
 require('should');
 var path = require('path');
-var parser = require('../lib/parse');
-//
-//describe('parse.lib', function () {
-//    it('return empty when find nothing', function () {
-//        file.glob('*.lq').should.eql([]);
-//    });
+var fh = require('../lib/file-helper');
+var Parser = require('../lib/parse');
+
+describe('parse.lib', function () {
+    // read the config
+    var config = fh.readJson('assets.json');
+    var p1 = new Parser({
+        dstFolder:'site'
+    });
+    it('return empty when find nothing', function () {
+        var jq = p1.parseLib(config.libs.jquery);
+        jq.should.eql([path.resolve('site/lib/jquery/dist/jquery.js')]);
+    });
 //    it('return sth when found sth', function () {
 //        var t = [
 //            path.resolve('test/glob/a.js'),
@@ -13,9 +20,4 @@ var parser = require('../lib/parse');
 //        ];
 //        file.glob('test/glob/*.js').should.eql(t);
 //    });
-////    it('return -1 when can\'t find element', function () {
-////        arr.inArray(a, 10086).should.eql(-1);
-////    });
-//});/**
-// * Created by at15 on 7/12/14.
-// */
+});
