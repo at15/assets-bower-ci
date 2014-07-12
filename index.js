@@ -52,11 +52,18 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof groups === 'object') {
         log.debug('Start loading groups for page ' + pageName);
         groups.forEach(function (groupName) {
-            pageFiles = me.mergeFiles(pageFiles, me.parseGroup(groupName));
+            pageFiles = arrh.merge(pageFiles, parse.parseGroup(groupName));
         });
     }
     log.debug('Start loading libs and files for page ' + pageName);
-    pageFiles = this.mergeFiles(pageFiles, this.parseLibsFiles(pageConfig));
+
+    var libs = pageConfig.libs;
+    if (typeof libs === 'object') {
+        libs.forEach(function (libName) {
+            pageFiles = arrh.merge(pageFiles, parse.parseLib(libName));
+        });
+    }
+
 
     pageFiles = this.resolveIndex(pageFiles);
     pageFiles = this.splitFile(pageFiles);
