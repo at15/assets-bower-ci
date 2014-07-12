@@ -22,7 +22,8 @@
     "groups": {
         "base": {
             "name":"base",
-            "libs": ["jquery", "bootstrap"]
+            "libs": ["jquery", "bootstrap"],
+            "files":["run.js"]
         }
     },
     "pages": {

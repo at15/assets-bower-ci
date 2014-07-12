@@ -69,11 +69,27 @@ describe('parse.lib', function () {
         });
         p2.parseLib('date-time').should.eql(realFiles);
     });
-//    it('return sth when found sth', function () {
-//        var t = [
-//            path.resolve('test/glob/a.js'),
-//            path.resolve('test/glob/t.js')
-//        ];
-//        file.glob('test/glob/*.js').should.eql(t);
-//    });
+    it('test group', function () {
+        var p3 = new Parser({
+            dstFolder: 'site',
+            libConfigs: config.libs,
+            groupConfigs: config.groups
+        });
+        var dtFiles = [
+            'site/lib/jquery/dist/jquery.js',
+            'site/lib/bootstrap/less/bootstrap.less',
+            'site/lib/bootstrap/dist/css/bootstrap.css',
+            'site/lib/bootstrap/dist/js/bootstrap.js',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.eot',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.svg',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.woff',
+            'run.js'
+        ];
+        var realFiles = [];
+        dtFiles.forEach(function (f) {
+            realFiles.push((path.resolve(f)));
+        });
+        p3.parseGroup('base').should.eql(realFiles);
+    });
 });
