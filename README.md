@@ -5,3 +5,4 @@ combine bower and front-end assets with codeignitor
 
 1. parse.js 根据assets.json生成parse过后的lib和group parsed.json (如果不是production模式就不会压缩)
 2. page.js 根据assets.json和parsed.json，如果不是production模式就不会压缩( 先解决非production模式的问题)
+3. 其实如果对于group,只是把它变成lib和file的话,额但是group是为了更好的压缩额

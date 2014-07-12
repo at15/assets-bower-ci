@@ -29,3 +29,23 @@ describe('arr.merge', function () {
         arr.merge(a, b, c).should.eql(['a', 'b', 'c', 'e', 'd']);
     })
 });
+
+describe('arr.common', function () {
+    var a = ['a', 'b', 'c'];
+    var b = ['a', 'e'];
+    var c = ['a', 'b', 'd'];
+    it('return the array with common elements of the two array', function () {
+        arr.common(a, c).should.eql(['a', 'b']);
+    });
+});
+
+describe('arr.subtract', function () {
+    var a = ['a', 'b', 'c'];
+    var b = ['a', 'e'];
+    var c = ['a', 'b', 'd'];
+    it('subtract the array', function () {
+        arr.subtract(a, b).should.eql(['b','c']);
+        arr.subtract(a, c).should.eql(['c']);
+    });
+});
+
