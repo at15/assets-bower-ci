@@ -40,13 +40,34 @@ describe('parse.lib', function () {
                 'site/assets/lib/date-time/moment.js'
             ];
         var realFiles = [];
-        dtFiles.forEach(function(f){
-           realFiles.push((path.resolve(f)));
+        dtFiles.forEach(function (f) {
+            realFiles.push((path.resolve(f)));
         });
         date_time.should.eql(realFiles);
     });
-    it('can get dependencies',function(){
-
+    it('can get dependencies', function () {
+        var p2 = new Parser({
+            dstFolder: 'site',
+            libConfigs: config.libs
+        });
+        var dtFiles = [
+            'site/lib/jquery/dist/jquery.js',
+            'site/lib/bootstrap/less/bootstrap.less',
+            'site/lib/bootstrap/dist/css/bootstrap.css',
+            'site/lib/bootstrap/dist/js/bootstrap.js',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.eot',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.svg',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf',
+            'site/lib/bootstrap/dist/fonts/glyphicons-halflings-regular.woff',
+            'site/assets/lib/date-time/bootstrap-datetimepicker.css',
+            'site/assets/lib/date-time/bootstrap-datetimepicker.js',
+            'site/assets/lib/date-time/moment.js'
+        ];
+        var realFiles = [];
+        dtFiles.forEach(function (f) {
+            realFiles.push((path.resolve(f)));
+        });
+        p2.parseLib('date-time').should.eql(realFiles);
     });
 //    it('return sth when found sth', function () {
 //        var t = [
