@@ -15,9 +15,9 @@ function Mgr(configPath) {
 Mgr.prototype.init = function () {
     this._config = {};
     this._pages = {};
-    // 已经压缩过的lib和group
-    this.minGroups = {};
-    this.minLibs = {};
+    // 已经加载过的lib和group
+    this.loadedGroups = {};
+    this.loadedLibs = {};
 };
 
 Mgr.prototype.setConfig = function (configPath) {
@@ -34,6 +34,14 @@ Mgr.prototype.config = function (name) {
     } else {
         log.warn(name + ' is not set in config!');
         return null;
+    }
+};
+
+Mgr.prototype.needMin = function () {
+    if (this.config('min')) {
+        return true;
+    } else {
+        return false;
     }
 };
 
@@ -61,19 +69,20 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof groups === 'object') {
         log.debug('Start loading groups for page ' + pageName);
         groups.forEach(function (groupName) {
-
-            if (typeof me.minGroups[groupName] === 'undefined') {
+            if (typeof me.loadedGroups[groupName] === 'undefined') {
                 groupFiles = parse.parseGroup(groupName);
-//                log.debug(path.join(me.config('grouppath'),groupName));
-                minOpt = {
-                    name: groupName,
-                    files: groupFiles,
-                    dstFolder: path.join(me.config('grouppath'), groupName)
-                };
-                groupFiles = min.lib(minOpt);
-                me.minGroups[groupName] = groupFiles;
+                // 只有需要压缩时才压缩(其实应该生成map文件，这样整个世界就清静了)
+                if (me.needMin()) {
+                    minOpt = {
+                        name: groupName,
+                        files: groupFiles,
+                        dstFolder: path.join(me.config('grouppath'), groupName)
+                    };
+                    groupFiles = min.lib(minOpt);
+                }
+                me.loadedGroups[groupName] = groupFiles;
             } else {
-                groupFiles = me.minGroups[groupName];
+                groupFiles = me.loadedGroups[groupName];
             }
 
             pageFiles = arrh.merge(pageFiles, groupFiles);
@@ -86,21 +95,20 @@ Mgr.prototype.parsePage = function (pageName) {
     var libFiles = [];
     if (typeof libs === 'object') {
         libs.forEach(function (libName) {
-
-            if (typeof me.minLibs[libName] === 'undefined') {
+            if (typeof me.loadedLibs[libName] === 'undefined') {
                 libFiles = parse.parseLib(libName);
-//                log.debug(path.join(me.config('libpath'),libName));
-                minOpt = {
-                    name: libName,
-                    files: libFiles,
-                    dstFolder: path.join(me.config('libpath'), libName)
-                };
-                libFiles = min.lib(minOpt);
-                me.minLibs[libName] = libFiles;
+                if (me.needMin()) {
+                    minOpt = {
+                        name: libName,
+                        files: libFiles,
+                        dstFolder: path.join(me.config('libpath'), libName)
+                    };
+                    libFiles = min.lib(minOpt);
+                }
+                me.loadedLibs[libName] = libFiles;
             } else {
-                libFiles = me.minLibs[libName];
+                libFiles = me.loadedLibs[libName];
             }
-
             pageFiles = arrh.merge(pageFiles, libFiles);
         });
     }
@@ -112,15 +120,14 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof fileGlobs === 'object') {
         // do the min for files
         filesOnly = fh.glob(fileGlobs);
-        minOpt = {
-            name: pageName,
-            files: filesOnly,
-            dstFolder: path.join(me.config('pagepath'), pageName)
-        };
-
-        // console.log(filesOnly);
-        filesOnly = min.lib(minOpt);
-        // console.log(filesOnly);
+        if (this.needMin()) {
+            minOpt = {
+                name: pageName,
+                files: filesOnly,
+                dstFolder: path.join(me.config('pagepath'), pageName)
+            };
+            filesOnly = min.lib(minOpt);
+        }
         pageFiles = arrh.merge(pageFiles, filesOnly);
     }
     log.debug('Resolve file path ');
