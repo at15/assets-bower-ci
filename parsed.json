@@ -1,13 +1,19 @@
 {
     "act": {
         "js": [
-            "assets/dist/group/base/base.min.js",
-            "assets/dist/lib/date-time/date-time.min.js",
-            "../run.js"
+            "assets\\dist\\group\\base\\base.min.js",
+            "assets\\dist\\lib\\date-time\\date-time.min.js",
+            "..\\run.js"
         ],
         "css": [
-            "assets/dist/group/base/base.min.css",
-            "assets/dist/lib/date-time/date-time.min.css"
+            "assets\\dist\\group\\base\\base.min.css",
+            "assets\\dist\\lib\\date-time\\date-time.min.css"
         ]
+    },
+    "home": {
+        "js": [
+            "assets\\dist\\lib\\jquery\\jquery.min.js"
+        ],
+        "css": []
     }
 }
