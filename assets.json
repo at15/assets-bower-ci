@@ -3,6 +3,8 @@
     "grouppath": "site/assets/group",
     "webroot":"site",
     "dst": "parsed.json",
+    "min":false,
+    "clean":false,
     "libs": {
         "jquery": {
             "name":"jquery",

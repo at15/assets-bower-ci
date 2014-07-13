@@ -53,7 +53,7 @@ Mgr.prototype.parsePage = function (pageName) {
     });
 
     var me = this;
-    // TODO: do the min css and min js here
+
     var groups = pageConfig.groups;
     var groupFiles = [];
     var minOpt = {};
@@ -79,13 +79,31 @@ Mgr.prototype.parsePage = function (pageName) {
     }
     log.debug('Start loading libs and files for page ' + pageName);
 
+    // TODO:do the min for libs
     var libs = pageConfig.libs;
+    var libFiles = [];
     if (typeof libs === 'object') {
         libs.forEach(function (libName) {
-            pageFiles = arrh.merge(pageFiles, parse.parseLib(libName));
+
+            if(typeof me.minLibs[libName] === 'undefined'){
+                libFiles = parse.parseLib(libName);
+                minOpt = {
+                    name:libName,
+                    files:libFiles,
+                    dstFolder:'site/lib/'+libName
+                };
+                libFiles = min.lib(minOpt);
+                me.minLibs[libName] = libFiles;
+            }else{
+                libFiles = me.minLibs[libName];
+            }
+
+            pageFiles = arrh.merge(pageFiles, libFiles);
         });
     }
 
+    // TODO:do the min for files and do the clean as well?
+    // No need, just add a task to clean all the js and css that are not min.js min.css
     var files = pageConfig.files;
     if (typeof files === 'object') {
         pageFiles = arrh.merge(pageFiles, fh.glob(files));
