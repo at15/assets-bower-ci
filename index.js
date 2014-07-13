@@ -69,6 +69,7 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof groups === 'object') {
         log.debug('Start loading groups for page ' + pageName);
         groups.forEach(function (groupName) {
+            log.debug('Parse group ' + groupName + ' for page '+ pageName);
             if (typeof me.loadedGroups[groupName] === 'undefined') {
                 groupFiles = parse.parseGroup(groupName);
                 // 只有需要压缩时才压缩(其实应该生成map文件，这样整个世界就清静了)
@@ -84,9 +85,8 @@ Mgr.prototype.parsePage = function (pageName) {
             } else {
                 groupFiles = me.loadedGroups[groupName];
             }
-
-            pageFiles = arrh.merge(pageFiles, groupFiles);
         });
+        pageFiles = arrh.merge(pageFiles, groupFiles);
     }
     log.debug('Start loading libs and files for page ' + pageName);
 
@@ -95,6 +95,7 @@ Mgr.prototype.parsePage = function (pageName) {
     var libFiles = [];
     if (typeof libs === 'object') {
         libs.forEach(function (libName) {
+            log.debug('Parse lib ' + libName + ' for page '+ pageName);
             if (typeof me.loadedLibs[libName] === 'undefined') {
                 libFiles = parse.parseLib(libName);
                 if (me.needMin()) {
@@ -109,8 +110,8 @@ Mgr.prototype.parsePage = function (pageName) {
             } else {
                 libFiles = me.loadedLibs[libName];
             }
-            pageFiles = arrh.merge(pageFiles, libFiles);
         });
+        pageFiles = arrh.merge(pageFiles, libFiles);
     }
 
     // TODO:do the min for files and do the clean as well?
