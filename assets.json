@@ -27,14 +27,16 @@
             "name":"base",
             "libs": ["jquery", "bootstrap"],
             "files":["run.js"]
+        },
+        "dt":{
+            "name":"dt",
+            "libs":["date-time"]
         }
     },
     "pages": {
         "act": {
             "name":"act",
-            "groups": ["base"],
-            "libs": ["date-time"],
-            "files":["run.js"]
+            "groups": ["base","dt"]
         },
         "home":{
             "name":"home",

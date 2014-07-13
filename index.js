@@ -85,8 +85,9 @@ Mgr.prototype.parsePage = function (pageName) {
             } else {
                 groupFiles = me.loadedGroups[groupName];
             }
+            pageFiles = arrh.merge(pageFiles, groupFiles);
         });
-        pageFiles = arrh.merge(pageFiles, groupFiles);
+
     }
     log.debug('Start loading libs and files for page ' + pageName);
 
@@ -110,8 +111,9 @@ Mgr.prototype.parsePage = function (pageName) {
             } else {
                 libFiles = me.loadedLibs[libName];
             }
+            pageFiles = arrh.merge(pageFiles, libFiles);
         });
-        pageFiles = arrh.merge(pageFiles, libFiles);
+
     }
 
     // TODO:do the min for files and do the clean as well?

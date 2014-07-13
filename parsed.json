@@ -2,12 +2,11 @@
     "act": {
         "js": [
             "assets\\dist\\group\\base\\base.min.js",
-            "assets\\dist\\lib\\date-time\\date-time.min.js",
-            "assets\\dist\\page\\act\\act.min.js"
+            "assets\\dist\\group\\dt\\dt.min.js"
         ],
         "css": [
             "assets\\dist\\group\\base\\base.min.css",
-            "assets\\dist\\lib\\date-time\\date-time.min.css"
+            "assets\\dist\\group\\dt\\dt.min.css"
         ]
     },
     "home": {
