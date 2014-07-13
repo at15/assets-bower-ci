@@ -3,7 +3,9 @@ var path = require('path');
 
 var log = require('./lib/log');
 var arrh = require('./lib/arr');
+var fh = require('./lib/file-helper');
 var Parser = require('./lib/parse');
+var min = require('./lib/min');
 
 function Mgr(configPath) {
     this.init();
@@ -13,6 +15,9 @@ function Mgr(configPath) {
 Mgr.prototype.init = function () {
     this._config = {};
     this._pages = {};
+    // 已经压缩过的lib和group
+    this.minGroups = {};
+    this.minLibs = {};
 };
 
 Mgr.prototype.setConfig = function (configPath) {
@@ -40,7 +45,6 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof pageConfig !== 'object') {
     }
     var pageFiles = [];
-    var me = this;
 
     var parse = new Parser({
         dstFolder: 'site',
@@ -48,11 +52,29 @@ Mgr.prototype.parsePage = function (pageName) {
         groupConfigs: this._config.groups
     });
 
+    var me = this;
+    // TODO: do the min css and min js here
     var groups = pageConfig.groups;
+    var groupFiles = [];
+    var minOpt = {};
     if (typeof groups === 'object') {
         log.debug('Start loading groups for page ' + pageName);
         groups.forEach(function (groupName) {
-            pageFiles = arrh.merge(pageFiles, parse.parseGroup(groupName));
+
+            if (typeof me.minGroups[groupName] === 'undefined'){
+                groupFiles = parse.parseGroup(groupName);
+                minOpt = {
+                    name:groupName,
+                    files:groupFiles,
+                    dstFolder:'site/group/'+groupName
+                };
+                groupFiles = min.lib(minOpt);
+                me.minGroups[groupName] = groupFiles;
+            }else{
+                groupFiles = me.minGroups[groupName];
+            }
+
+            pageFiles = arrh.merge(pageFiles,groupFiles);
         });
     }
     log.debug('Start loading libs and files for page ' + pageName);
@@ -64,9 +86,13 @@ Mgr.prototype.parsePage = function (pageName) {
         });
     }
 
+    var files = pageConfig.files;
+    if (typeof files === 'object') {
+        pageFiles = arrh.merge(pageFiles, fh.glob(files));
+    }
 
-    pageFiles = this.resolveIndex(pageFiles);
-    pageFiles = this.splitFile(pageFiles);
+    // pageFiles = this.resolveIndex(pageFiles);
+    // pageFiles = this.splitFile(pageFiles);
     this._pages[pageName] = pageFiles;
     return this._pages[pageName];
 };
