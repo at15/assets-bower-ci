@@ -1,10 +1,9 @@
 {
     "act": [
-        "site/group/base/base.min.js",
-        "site/group/base/base.min.css",
-        "/home/at15/vms/tongqu4/assets-bower-ci/site/assets/lib/date-time/bootstrap-datetimepicker.css",
-        "/home/at15/vms/tongqu4/assets-bower-ci/site/assets/lib/date-time/bootstrap-datetimepicker.js",
-        "/home/at15/vms/tongqu4/assets-bower-ci/site/assets/lib/date-time/moment.js",
+        "/home/at15/vms/tongqu4/assets-bower-ci/site/group/base/base.min.js",
+        "/home/at15/vms/tongqu4/assets-bower-ci/site/group/base/base.min.css",
+        "/home/at15/vms/tongqu4/assets-bower-ci/site/lib/date-time/date-time.min.js",
+        "/home/at15/vms/tongqu4/assets-bower-ci/site/lib/date-time/date-time.min.css",
         "/home/at15/vms/tongqu4/assets-bower-ci/run.js"
     ]
 }

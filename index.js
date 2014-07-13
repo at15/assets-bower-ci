@@ -79,7 +79,7 @@ Mgr.prototype.parsePage = function (pageName) {
     }
     log.debug('Start loading libs and files for page ' + pageName);
 
-    // TODO:do the min for libs
+
     var libs = pageConfig.libs;
     var libFiles = [];
     if (typeof libs === 'object') {
