@@ -3,7 +3,7 @@
         "js": [
             "assets\\dist\\group\\base\\base.min.js",
             "assets\\dist\\lib\\date-time\\date-time.min.js",
-            "..\\run.js"
+            "assets\\dist\\page\\act\\act.min.js"
         ],
         "css": [
             "assets\\dist\\group\\base\\base.min.css",

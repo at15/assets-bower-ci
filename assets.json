@@ -1,6 +1,7 @@
 {
     "libpath": "site/assets/dist/lib",
     "grouppath": "site/assets/dist/group",
+    "pagepath":"site/assets/dist/page",
     "webroot":"site",
     "dst": "parsed.json",
     "min":false,

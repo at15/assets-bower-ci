@@ -48,7 +48,7 @@ Mgr.prototype.parsePage = function (pageName) {
 
     var parse = new Parser({
         dstFolder: 'site',
-        dstLibFolder:this.config('libpath'),
+        dstLibFolder: this.config('libpath'),
         libConfigs: this._config.libs,
         groupConfigs: this._config.groups
     });
@@ -62,21 +62,21 @@ Mgr.prototype.parsePage = function (pageName) {
         log.debug('Start loading groups for page ' + pageName);
         groups.forEach(function (groupName) {
 
-            if (typeof me.minGroups[groupName] === 'undefined'){
+            if (typeof me.minGroups[groupName] === 'undefined') {
                 groupFiles = parse.parseGroup(groupName);
 //                log.debug(path.join(me.config('grouppath'),groupName));
                 minOpt = {
-                    name:groupName,
-                    files:groupFiles,
-                    dstFolder:path.join(me.config('grouppath'),groupName)
+                    name: groupName,
+                    files: groupFiles,
+                    dstFolder: path.join(me.config('grouppath'), groupName)
                 };
                 groupFiles = min.lib(minOpt);
                 me.minGroups[groupName] = groupFiles;
-            }else{
+            } else {
                 groupFiles = me.minGroups[groupName];
             }
 
-            pageFiles = arrh.merge(pageFiles,groupFiles);
+            pageFiles = arrh.merge(pageFiles, groupFiles);
         });
     }
     log.debug('Start loading libs and files for page ' + pageName);
@@ -87,17 +87,17 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof libs === 'object') {
         libs.forEach(function (libName) {
 
-            if(typeof me.minLibs[libName] === 'undefined'){
+            if (typeof me.minLibs[libName] === 'undefined') {
                 libFiles = parse.parseLib(libName);
 //                log.debug(path.join(me.config('libpath'),libName));
                 minOpt = {
-                    name:libName,
-                    files:libFiles,
-                    dstFolder:path.join(me.config('libpath'),libName)
+                    name: libName,
+                    files: libFiles,
+                    dstFolder: path.join(me.config('libpath'), libName)
                 };
                 libFiles = min.lib(minOpt);
                 me.minLibs[libName] = libFiles;
-            }else{
+            } else {
                 libFiles = me.minLibs[libName];
             }
 
@@ -107,18 +107,31 @@ Mgr.prototype.parsePage = function (pageName) {
 
     // TODO:do the min for files and do the clean as well?
     // No need, just add a task to clean all the js and css that are not min.js min.css
-    var files = pageConfig.files;
-    if (typeof files === 'object') {
-        pageFiles = arrh.merge(pageFiles, fh.glob(files));
-    }
+    var fileGlobs = pageConfig.files;
+    var filesOnly = [];
+    if (typeof fileGlobs === 'object') {
+        // do the min for files
+        filesOnly = fh.glob(fileGlobs);
+        minOpt = {
+            name: pageName,
+            files: filesOnly,
+            dstFolder: path.join(me.config('pagepath'), pageName)
+        };
 
-    pageFiles = fh.resolve(pageFiles,this.config('webroot'));
+        // console.log(filesOnly);
+        filesOnly = min.lib(minOpt);
+        // console.log(filesOnly);
+        pageFiles = arrh.merge(pageFiles, filesOnly);
+    }
+    log.debug('Resolve file path ');
+    pageFiles = fh.resolve(pageFiles, this.config('webroot'));
 
     // split the files
     var scripts = {};
-    scripts.js = fh.split(pageFiles,'js');
-    scripts.css = fh.split(pageFiles,'css');
+    scripts.js = fh.split(pageFiles, 'js');
+    scripts.css = fh.split(pageFiles, 'css');
     this._pages[pageName] = scripts;
+    log.debug('Finish loading page ' + pageName);
     return this._pages[pageName];
 };
 
