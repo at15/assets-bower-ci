@@ -1,9 +1,13 @@
 {
-    "act": [
-        "/home/at15/vms/tongqu4/assets-bower-ci/site/group/base/base.min.js",
-        "/home/at15/vms/tongqu4/assets-bower-ci/site/group/base/base.min.css",
-        "/home/at15/vms/tongqu4/assets-bower-ci/site/lib/date-time/date-time.min.js",
-        "/home/at15/vms/tongqu4/assets-bower-ci/site/lib/date-time/date-time.min.css",
-        "/home/at15/vms/tongqu4/assets-bower-ci/run.js"
-    ]
+    "act": {
+        "js": [
+            "assets/dist/group/base/base.min.js",
+            "assets/dist/lib/date-time/date-time.min.js",
+            "../run.js"
+        ],
+        "css": [
+            "assets/dist/group/base/base.min.css",
+            "assets/dist/lib/date-time/date-time.min.css"
+        ]
+    }
 }

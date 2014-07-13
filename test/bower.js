@@ -26,4 +26,5 @@ describe('bower-helper.copy', function () {
         var pkg = bower.read('jquery');
         bower.copy(pkg,'site/lib').should.eql([path.resolve('site/lib/jquery/dist/jquery.js')]);
     });
+    // if all is well remove the file
 });

@@ -48,6 +48,7 @@ Mgr.prototype.parsePage = function (pageName) {
 
     var parse = new Parser({
         dstFolder: 'site',
+        dstLibFolder:this.config('libpath'),
         libConfigs: this._config.libs,
         groupConfigs: this._config.groups
     });
@@ -63,10 +64,11 @@ Mgr.prototype.parsePage = function (pageName) {
 
             if (typeof me.minGroups[groupName] === 'undefined'){
                 groupFiles = parse.parseGroup(groupName);
+//                log.debug(path.join(me.config('grouppath'),groupName));
                 minOpt = {
                     name:groupName,
                     files:groupFiles,
-                    dstFolder:'site/group/'+groupName
+                    dstFolder:path.join(me.config('grouppath'),groupName)
                 };
                 groupFiles = min.lib(minOpt);
                 me.minGroups[groupName] = groupFiles;
@@ -87,10 +89,11 @@ Mgr.prototype.parsePage = function (pageName) {
 
             if(typeof me.minLibs[libName] === 'undefined'){
                 libFiles = parse.parseLib(libName);
+//                log.debug(path.join(me.config('libpath'),libName));
                 minOpt = {
                     name:libName,
                     files:libFiles,
-                    dstFolder:'site/lib/'+libName
+                    dstFolder:path.join(me.config('libpath'),libName)
                 };
                 libFiles = min.lib(minOpt);
                 me.minLibs[libName] = libFiles;
@@ -109,9 +112,13 @@ Mgr.prototype.parsePage = function (pageName) {
         pageFiles = arrh.merge(pageFiles, fh.glob(files));
     }
 
-    // pageFiles = this.resolveIndex(pageFiles);
-    // pageFiles = this.splitFile(pageFiles);
-    this._pages[pageName] = pageFiles;
+    pageFiles = fh.resolve(pageFiles,this.config('webroot'));
+
+    // split the files
+    var scripts = {};
+    scripts.js = fh.split(pageFiles,'js');
+    scripts.css = fh.split(pageFiles,'css');
+    this._pages[pageName] = scripts;
     return this._pages[pageName];
 };
 
