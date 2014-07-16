@@ -2,7 +2,8 @@
     "act": {
         "js": [
             "assets\\dist\\group\\base\\base.min.js",
-            "assets\\dist\\group\\dt\\dt.min.js"
+            "assets\\dist\\group\\dt\\dt.min.js",
+            "assets\\lib\\umeditor\\umeditor.min.js"
         ],
         "css": [
             "assets\\dist\\group\\base\\base.min.css",

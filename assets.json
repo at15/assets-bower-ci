@@ -1,46 +1,57 @@
 {
     "libpath": "site/assets/dist/lib",
     "grouppath": "site/assets/dist/group",
-    "pagepath":"site/assets/dist/page",
-    "webroot":"site",
+    "pagepath": "site/assets/dist/page",
+    "webroot": "site",
     "dst": "parsed.json",
-    "min":true,
-    "clean":false,
+    "min": true,
+    "clean": false,
     "libs": {
         "jquery": {
-            "name":"jquery",
+            "name": "jquery",
             "bower": true
         },
         "bootstrap": {
-            "name":"bootstrap",
+            "name": "bootstrap",
             "bower": true
         },
         "date-time": {
-            "name":"date-time",
+            "name": "date-time",
             "bower": false,
             "files": ["site/assets/lib/date-time/*.*"],
             "dependencies": ["jquery", "bootstrap"]
+        },
+        "umeditor": {
+            "name": "umeditor",
+            "bower": false,
+            "folder": "site/assets/lib/umeditor",
+            "files": [
+                "site/assets/lib/umeditor/umeditor.js",
+                "site/assets/lib/umeditor/umeditor.config.js"
+            ]
         }
     },
     "groups": {
         "base": {
-            "name":"base",
+            "name": "base",
             "libs": ["jquery", "bootstrap"],
-            "files":["run.js"]
+            "files": ["run.js"]
         },
-        "dt":{
-            "name":"dt",
-            "libs":["date-time"]
+        "dt": {
+            "name": "dt",
+            "libs": ["date-time"]
         }
     },
     "pages": {
         "act": {
-            "name":"act",
-            "groups": ["base","dt"]
+            "name": "act",
+            "groups": ["base", "dt"],
+            "libs": ["umeditor"]
+
         },
-        "home":{
-            "name":"home",
-            "libs":["jquery"]
+        "home": {
+            "name": "home",
+            "libs": ["jquery"]
         }
     }
 }

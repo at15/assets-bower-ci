@@ -45,6 +45,10 @@ Mgr.prototype.needMin = function () {
     }
 };
 
+Mgr.prototype.getConfig = function (libName) {
+    return this._config.libs[libName];
+};
+
 Mgr.prototype.parsePage = function (pageName) {
     // we don't need to cache the page right?...
     log.debug('Parse page: ' + pageName);
@@ -69,7 +73,7 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof groups === 'object') {
         log.debug('Start loading groups for page ' + pageName);
         groups.forEach(function (groupName) {
-            log.debug('Parse group ' + groupName + ' for page '+ pageName);
+            log.debug('Parse group ' + groupName + ' for page ' + pageName);
             if (typeof me.loadedGroups[groupName] === 'undefined') {
                 groupFiles = parse.parseGroup(groupName);
                 // 只有需要压缩时才压缩(其实应该生成map文件，这样整个世界就清静了)
@@ -96,14 +100,21 @@ Mgr.prototype.parsePage = function (pageName) {
     var libFiles = [];
     if (typeof libs === 'object') {
         libs.forEach(function (libName) {
-            log.debug('Parse lib ' + libName + ' for page '+ pageName);
+            log.debug('Parse lib ' + libName + ' for page ' + pageName);
             if (typeof me.loadedLibs[libName] === 'undefined') {
                 libFiles = parse.parseLib(libName);
                 if (me.needMin()) {
+                    // 如果指定了文件夹用用指定的文件夹
+                    var dstFolder = '';
+                    if (me.getConfig(libName).folder) {
+                        dstFolder = me.getConfig(libName).folder;
+                    } else {
+                        dstFolder = path.join(me.config('libpath'), libName);
+                    }
                     minOpt = {
                         name: libName,
                         files: libFiles,
-                        dstFolder: path.join(me.config('libpath'), libName)
+                        dstFolder: dstFolder
                     };
                     libFiles = min.lib(minOpt);
                 }
