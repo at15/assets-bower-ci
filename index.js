@@ -104,19 +104,20 @@ Mgr.prototype.parsePage = function (pageName) {
             if (typeof me.loadedLibs[libName] === 'undefined') {
                 libFiles = parse.parseLib(libName);
                 if (me.needMin()) {
-                    // 如果指定了文件夹用用指定的文件夹
+                    // 如果指定了文件夹就不再对文件进行压缩?
+                    // 其实应该复制文件并且相对文件夹进行压缩
                     var dstFolder = '';
                     if (me.getConfig(libName).folder) {
                         dstFolder = me.getConfig(libName).folder;
                     } else {
                         dstFolder = path.join(me.config('libpath'), libName);
-                    }
-                    minOpt = {
+                         minOpt = {
                         name: libName,
                         files: libFiles,
                         dstFolder: dstFolder
-                    };
-                    libFiles = min.lib(minOpt);
+                        };
+                        libFiles = min.lib(minOpt);
+                    }
                 }
                 me.loadedLibs[libName] = libFiles;
             } else {
@@ -159,6 +160,8 @@ Mgr.prototype.parsePage = function (pageName) {
 
 Mgr.prototype.toJSON = function (dst) {
     var str_pages = JSON.stringify(this._pages, null, 4);
+    // 把\\替换成/以避免windows下路径分割符导致的错误
+    str_pages = str_pages.replace(/\\\\/g,'/');
     try {
         fs.writeFileSync(dst, str_pages);
     } catch (e) {

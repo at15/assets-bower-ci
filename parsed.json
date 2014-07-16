@@ -1,18 +1,19 @@
 {
     "act": {
         "js": [
-            "assets\\dist\\group\\base\\base.min.js",
-            "assets\\dist\\group\\dt\\dt.min.js",
-            "assets\\lib\\umeditor\\umeditor.min.js"
+            "assets/dist/group/base/base.min.js",
+            "assets/dist/group/dt/dt.min.js",
+            "assets/lib/umeditor/umeditor.js",
+            "assets/lib/umeditor/umeditor.config.js"
         ],
         "css": [
-            "assets\\dist\\group\\base\\base.min.css",
-            "assets\\dist\\group\\dt\\dt.min.css"
+            "assets/dist/group/base/base.min.css",
+            "assets/dist/group/dt/dt.min.css"
         ]
     },
     "home": {
         "js": [
-            "assets\\dist\\lib\\jquery\\jquery.min.js"
+            "assets/dist/lib/jquery/jquery.min.js"
         ],
         "css": []
     }
