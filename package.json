@@ -1,6 +1,6 @@
 {
     "name": "assets-bower-ci",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "assets-bower-ci ===============",
     "main": "index.js",
     "scripts": {
@@ -21,7 +21,6 @@
     "dependencies": {
         "log4js": "latest",
         "glob": "latest",
-        "bower": "latest",
         "mkdirp": "latest",
         "uglify-js": "latest",
         "clean-css": "latest"
