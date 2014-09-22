@@ -38,11 +38,7 @@ Mgr.prototype.config = function (name) {
 };
 
 Mgr.prototype.needMin = function () {
-    if (this.config('min')) {
-        return true;
-    } else {
-        return false;
-    }
+    return this.config('min') ? true : false;
 };
 
 Mgr.prototype.getConfig = function (libName) {
@@ -67,6 +63,14 @@ Mgr.prototype.parsePage = function (pageName) {
 
     var me = this;
 
+    function pageNeedMin() {
+        if (typeof pageConfig.min !== 'undefined' && pageConfig.min) {
+            return true;
+        } else {
+            return me.needMin();
+        }
+    }
+
     var groups = pageConfig.groups;
     var groupFiles = [];
     var minOpt = {};
@@ -77,7 +81,8 @@ Mgr.prototype.parsePage = function (pageName) {
             if (typeof me.loadedGroups[groupName] === 'undefined') {
                 groupFiles = parse.parseGroup(groupName);
                 // 只有需要压缩时才压缩(其实应该生成map文件，这样整个世界就清静了)
-                if (me.needMin()) {
+                // TODO:允许某个页面压缩其他页面不压缩
+                if (pageNeedMin()) {
                     minOpt = {
                         name: groupName,
                         files: groupFiles,
@@ -103,7 +108,7 @@ Mgr.prototype.parsePage = function (pageName) {
             log.debug('Parse lib ' + libName + ' for page ' + pageName);
             if (typeof me.loadedLibs[libName] === 'undefined') {
                 libFiles = parse.parseLib(libName);
-                if (me.needMin()) {
+                if (pageNeedMin()) {
                     // 如果指定了文件夹就不再对文件进行压缩?
                     // 其实应该复制文件并且相对文件夹进行压缩
                     var dstFolder = '';
@@ -111,10 +116,10 @@ Mgr.prototype.parsePage = function (pageName) {
                         dstFolder = me.getConfig(libName).folder;
                     } else {
                         dstFolder = path.join(me.config('libpath'), libName);
-                         minOpt = {
-                        name: libName,
-                        files: libFiles,
-                        dstFolder: dstFolder
+                        minOpt = {
+                            name: libName,
+                            files: libFiles,
+                            dstFolder: dstFolder
                         };
                         libFiles = min.lib(minOpt);
                     }
@@ -135,7 +140,7 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof fileGlobs === 'object') {
         // do the min for files
         filesOnly = fh.glob(fileGlobs);
-        if (this.needMin()) {
+        if (pageNeedMin()) {
             minOpt = {
                 name: pageName,
                 files: filesOnly,
@@ -161,7 +166,7 @@ Mgr.prototype.parsePage = function (pageName) {
 Mgr.prototype.toJSON = function (dst) {
     var str_pages = JSON.stringify(this._pages, null, 4);
     // 把\\替换成/以避免windows下路径分割符导致的错误
-    str_pages = str_pages.replace(/\\\\/g,'/');
+    str_pages = str_pages.replace(/\\\\/g, '/');
     try {
         fs.writeFileSync(dst, str_pages);
     } catch (e) {
