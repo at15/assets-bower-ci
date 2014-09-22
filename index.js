@@ -78,22 +78,22 @@ Mgr.prototype.parsePage = function (pageName) {
         log.debug('Start loading groups for page ' + pageName);
         groups.forEach(function (groupName) {
             log.debug('Parse group ' + groupName + ' for page ' + pageName);
-            if (typeof me.loadedGroups[groupName] === 'undefined') {
-                groupFiles = parse.parseGroup(groupName);
-                // 只有需要压缩时才压缩(其实应该生成map文件，这样整个世界就清静了)
-                // TODO:允许某个页面压缩其他页面不压缩
-                if (pageNeedMin()) {
+            groupFiles = parse.parseGroup(groupName);
+            if (pageNeedMin()) {
+                // 压缩和不压缩的要分开处理额，在缓存的时候
+                if (typeof me.loadedGroups[groupName + '.min'] === 'undefined') {
                     minOpt = {
                         name: groupName,
                         files: groupFiles,
                         dstFolder: path.join(me.config('grouppath'), groupName)
                     };
                     groupFiles = min.lib(minOpt);
+                    me.loadedGroups[groupName + '.min'] = groupFiles;
+                } else {
+                    groupFiles = me.loadedGroups[groupName + '.min'];
                 }
-                me.loadedGroups[groupName] = groupFiles;
-            } else {
-                groupFiles = me.loadedGroups[groupName];
             }
+
             pageFiles = arrh.merge(pageFiles, groupFiles);
         });
 
@@ -106,27 +106,25 @@ Mgr.prototype.parsePage = function (pageName) {
     if (typeof libs === 'object') {
         libs.forEach(function (libName) {
             log.debug('Parse lib ' + libName + ' for page ' + pageName);
-            if (typeof me.loadedLibs[libName] === 'undefined') {
-                libFiles = parse.parseLib(libName);
-                if (pageNeedMin()) {
-                    // 如果指定了文件夹就不再对文件进行压缩?
-                    // 其实应该复制文件并且相对文件夹进行压缩
+            libFiles = parse.parseLib(libName);
+            if(pageNeedMin()){
+                if(typeof me.loadedLibs[libName + '.min'] === 'undefined' ){
                     var dstFolder = '';
                     if (me.getConfig(libName).folder) {
                         dstFolder = me.getConfig(libName).folder;
                     } else {
                         dstFolder = path.join(me.config('libpath'), libName);
-                        minOpt = {
-                            name: libName,
-                            files: libFiles,
-                            dstFolder: dstFolder
-                        };
-                        libFiles = min.lib(minOpt);
                     }
+                    minOpt = {
+                        name: libName,
+                        files: libFiles,
+                        dstFolder: dstFolder
+                    };
+                    libFiles = min.lib(minOpt);
+                    me.loadedLibs[libName + '.min'] = libFiles;
+                }else{
+                    libFiles =  me.loadedLibs[libName + '.min'];
                 }
-                me.loadedLibs[libName] = libFiles;
-            } else {
-                libFiles = me.loadedLibs[libName];
             }
             pageFiles = arrh.merge(pageFiles, libFiles);
         });
