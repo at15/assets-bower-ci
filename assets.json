@@ -4,7 +4,7 @@
     "pagepath": "site/assets/dist/page",
     "webroot": "site",
     "dst": "parsed.json",
-    "min": true,
+    "min": false,
     "clean": false,
     "libs": {
         "jquery": {
@@ -51,7 +51,15 @@
         },
         "home": {
             "name": "home",
-            "libs": ["jquery"]
+            "libs": ["jquery"],
+            "templates":[
+            "site/assets/home/nav.html",
+            "site/assets/home/detail.html"
+            ],
+            "templatePaht":"site/assets/home/tmpl.js",
+            "files":[
+                "site/assets/home/*.js"
+            ]
         }
     }
 }

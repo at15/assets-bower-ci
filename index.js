@@ -132,6 +132,22 @@ Mgr.prototype.parsePage = function (pageName) {
 
     }
 
+    var templateGlobs = pageConfig.templates;
+    var templateFiles = [];
+    var templateContent = '';
+    if(typeof templateGlobs === 'object'){
+        // min the templates
+        templateFiles = fh.glob(templateGlobs);
+        templateFiles.forEach(function(filePath){
+            templateContent += html2js.toJs({
+                src:filePath,
+                url:path.basename(filePath)
+            });
+        });
+        // 写入到哪里呢?还有压缩的问题，其实应该跟app一起压缩的....还是分开处理吧.
+        fh.write(pageConfig.templatePath,content);
+    }
+
     // TODO:do the min for files and do the clean as well?
     // No need, just add a task to clean all the js and css that are not min.js min.css
     var fileGlobs = pageConfig.files;
@@ -153,21 +169,7 @@ Mgr.prototype.parsePage = function (pageName) {
     pageFiles = fh.resolve(pageFiles, this.config('webroot'));
 
 
-    // var templateGlobs = pageConfig.template;
-    // var templateFiles = [];
-    // var templateContent = '';
-    // if(typeof templateGlobs === 'object'){
-    //     // min the templates
-    //     templateFiles = fh.glob(templateGlobs);
-    //     templateFiles.forEach(filePath){
-    //         templateContent += html2js.toJs({
-    //             src:filePath,
-    //             url:path.basename(filePath)
-    //         });
-    //     }
-    //     // 写入到哪里呢?还有压缩的问题，其实应该跟app一起压缩的....还是分开处理吧.
-    //     fh.write()
-    // }
+   
 
     // split the files
     var scripts = {};
