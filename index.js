@@ -6,6 +6,7 @@ var arrh = require('./lib/arr');
 var fh = require('./lib/file-helper');
 var Parser = require('./lib/parse');
 var min = require('./lib/min');
+var html2js = require('./lib/ngHtml2js');
 
 function Mgr(configPath) {
     this.init();
@@ -151,6 +152,22 @@ Mgr.prototype.parsePage = function (pageName) {
     log.debug('Resolve file path ');
     pageFiles = fh.resolve(pageFiles, this.config('webroot'));
 
+
+    // var templateGlobs = pageConfig.template;
+    // var templateFiles = [];
+    // var templateContent = '';
+    // if(typeof templateGlobs === 'object'){
+    //     // min the templates
+    //     templateFiles = fh.glob(templateGlobs);
+    //     templateFiles.forEach(filePath){
+    //         templateContent += html2js.toJs({
+    //             src:filePath,
+    //             url:path.basename(filePath)
+    //         });
+    //     }
+    //     // 写入到哪里呢?还有压缩的问题，其实应该跟app一起压缩的....还是分开处理吧.
+    //     fh.write()
+    // }
 
     // split the files
     var scripts = {};
