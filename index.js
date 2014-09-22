@@ -151,6 +151,7 @@ Mgr.prototype.parsePage = function (pageName) {
     log.debug('Resolve file path ');
     pageFiles = fh.resolve(pageFiles, this.config('webroot'));
 
+
     // split the files
     var scripts = {};
     scripts.js = fh.split(pageFiles, 'js');
