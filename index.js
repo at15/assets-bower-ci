@@ -145,7 +145,7 @@ Mgr.prototype.parsePage = function (pageName) {
             });
         });
         // 写入到哪里呢?还有压缩的问题，其实应该跟app一起压缩的....还是分开处理吧.
-        fh.write(pageConfig.templatePath,content);
+        fh.write(pageConfig.templatePath,templateContent);
     }
 
     // TODO:do the min for files and do the clean as well?

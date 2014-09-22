@@ -56,7 +56,7 @@
             "site/assets/home/nav.html",
             "site/assets/home/detail.html"
             ],
-            "templatePaht":"site/assets/home/tmpl.js",
+            "templatePath":"site/assets/home/tmpl.js",
             "files":[
                 "site/assets/home/*.js"
             ]
