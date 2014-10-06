@@ -7,6 +7,7 @@ var fh = require('./lib/file-helper');
 var Parser = require('./lib/parse');
 var min = require('./lib/min');
 var html2js = require('./lib/ngHtml2js');
+var hash = require('./lib/hash');
 
 function Mgr(configPath) {
     this.init();
@@ -108,8 +109,8 @@ Mgr.prototype.parsePage = function (pageName) {
         libs.forEach(function (libName) {
             log.debug('Parse lib ' + libName + ' for page ' + pageName);
             libFiles = parse.parseLib(libName);
-            if(pageNeedMin()){
-                if(typeof me.loadedLibs[libName + '.min'] === 'undefined' ){
+            if (pageNeedMin()) {
+                if (typeof me.loadedLibs[libName + '.min'] === 'undefined') {
                     var dstFolder = '';
                     if (me.getConfig(libName).folder) {
                         dstFolder = me.getConfig(libName).folder;
@@ -123,8 +124,8 @@ Mgr.prototype.parsePage = function (pageName) {
                     };
                     libFiles = min.lib(minOpt);
                     me.loadedLibs[libName + '.min'] = libFiles;
-                }else{
-                    libFiles =  me.loadedLibs[libName + '.min'];
+                } else {
+                    libFiles = me.loadedLibs[libName + '.min'];
                 }
             }
             pageFiles = arrh.merge(pageFiles, libFiles);
@@ -135,17 +136,17 @@ Mgr.prototype.parsePage = function (pageName) {
     var templateGlobs = pageConfig.templates;
     var templateFiles = [];
     var templateContent = '';
-    if(typeof templateGlobs === 'object'){
+    if (typeof templateGlobs === 'object') {
         // min the templates
         templateFiles = fh.glob(templateGlobs);
-        templateFiles.forEach(function(filePath){
+        templateFiles.forEach(function (filePath) {
             templateContent += html2js.toJs({
-                src:filePath,
-                url:path.basename(filePath)
+                src: filePath,
+                url: path.basename(filePath)
             });
         });
         // 写入到哪里呢?还有压缩的问题，其实应该跟app一起压缩的....还是分开处理吧.
-        fh.write(pageConfig.templatePath,templateContent);
+        fh.write(pageConfig.templatePath, templateContent);
     }
 
     // TODO:do the min for files and do the clean as well?
@@ -168,8 +169,6 @@ Mgr.prototype.parsePage = function (pageName) {
     log.debug('Resolve file path ');
     pageFiles = fh.resolve(pageFiles, this.config('webroot'));
 
-
-   
 
     // split the files
     var scripts = {};
@@ -204,11 +203,27 @@ Mgr.prototype.parseAllPage = function () {
         log.debug(pageName);
         this.parsePage(pageName);
     }
+    if (this.config('hash')) {
+        this.hash();
+    }
     this.toJSON(this._config.dst);
 };
 
-Mgr.prototype.hash = function(){
+Mgr.prototype.hash = function () {
     // first get all the files
+    console.log(this._pages);
+    var webroot = this.config('webroot');
+    for (var page_name in this._pages) {
+        var page = this._pages[page_name];
+        page.js = page.js.map(function (file) {
+            return file + '?hash=' + hash(webroot + '/' + file);
+        });
+
+        page.css = page.css.map(function (file) {
+            return file + '?hash=' + hash(webroot + '/' + file);
+        });
+    }
+
 };
 
 module.exports = Mgr;
