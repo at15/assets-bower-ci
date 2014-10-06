@@ -6,6 +6,7 @@
     "dst": "parsed.json",
     "min": false,
     "clean": false,
+    "hash":true,
     "libs": {
         "jquery": {
             "name": "jquery",
