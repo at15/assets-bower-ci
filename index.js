@@ -207,4 +207,8 @@ Mgr.prototype.parseAllPage = function () {
     this.toJSON(this._config.dst);
 };
 
+Mgr.prototype.hash = function(){
+    // first get all the files
+};
+
 module.exports = Mgr;
