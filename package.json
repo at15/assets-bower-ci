@@ -1,6 +1,6 @@
 {
     "name": "assets-bower-ci",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "assets-bower-ci ===============",
     "main": "index.js",
     "scripts": {
