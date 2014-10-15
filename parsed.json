@@ -1,17 +1,16 @@
 {
     "act": {
         "js": [
-            "../run.js?hash=94f2e6",
-            "assets/lib/date-time/bootstrap-datetimepicker.js?hash=bb011d",
-            "assets/lib/date-time/moment.js?hash=e254b6"
+            "assets/dist/group/base/base.min.js?hash=a34d19",
+            "assets/dist/group/dt/dt.min.js?hash=2401f9"
         ],
         "css": [
-            "assets/lib/date-time/bootstrap-datetimepicker.css?hash=11559a"
+            "assets/dist/group/dt/dt.min.css?hash=bd750c"
         ]
     },
     "home": {
         "js": [
-            "assets/home/tmpl.js?hash=f04a3c"
+            "assets/dist/page/home/home.min.js?hash=a457c6"
         ],
         "css": []
     }

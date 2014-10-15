@@ -4,7 +4,7 @@
     "pagepath": "site/assets/dist/page",
     "webroot": "site",
     "dst": "parsed.json",
-    "min": false,
+    "min": true,
     "clean": false,
     "hash":true,
     "libs": {

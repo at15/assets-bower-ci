@@ -1,6 +1,6 @@
 {
     "name": "assets-bower-ci",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "assets-bower-ci ===============",
     "main": "index.js",
     "scripts": {
@@ -11,7 +11,7 @@
         "url": "https://github.com/at15/assets-bower-ci.git"
     },
     "author": "",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/at15/assets-bower-ci/issues"
     },
