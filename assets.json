@@ -7,6 +7,7 @@
     "min": true,
     "clean": false,
     "hash":true,
+    "oss":"config/oss.json",
     "libs": {
         "jquery": {
             "name": "jquery",
