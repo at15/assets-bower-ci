@@ -8,6 +8,7 @@ var Parser = require('./lib/parse');
 var min = require('./lib/min');
 var html2js = require('./lib/ngHtml2js');
 var hash = require('./lib/hash');
+var oss = require('./lib/oss');
 
 function Mgr(configPath) {
     this.init();
@@ -192,23 +193,6 @@ Mgr.prototype.toJSON = function (dst) {
 };
 
 
-Mgr.prototype.parseAllPage = function () {
-    if (typeof this._config.pages !== 'object') {
-        log.error('config is not set! can\'t find any page!');
-        return;
-    }
-    var pages = this._config.pages;
-    var pageName;
-    for (pageName in pages) {
-        log.debug(pageName);
-        this.parsePage(pageName);
-    }
-    if (this.config('hash')) {
-        this.hash();
-    }
-    this.toJSON(this._config.dst);
-};
-
 Mgr.prototype.hash = function () {
     // first get all the files
     log.debug('hashing file now!');
@@ -226,6 +210,32 @@ Mgr.prototype.hash = function () {
         });
     }
 
+};
+
+Mgr.prototype.upload = function () {
+    log.debug('Parse before upload');
+    this.parseAllPage();
+
+    log.debug('Uploading to aliyun oss');
+    oss.init(fh.readJson(this.config('oss')));
+    oss.uploadAssetsJson(this._pages, this.config('webroot'));
+};
+
+Mgr.prototype.parseAllPage = function () {
+    if (typeof this._config.pages !== 'object') {
+        log.error('config is not set! can\'t find any page!');
+        return;
+    }
+    var pages = this._config.pages;
+    var pageName;
+    for (pageName in pages) {
+        log.debug(pageName);
+        this.parsePage(pageName);
+    }
+    if (this.config('hash')) {
+        this.hash();
+    }
+    this.toJSON(this._config.dst);
 };
 
 module.exports = Mgr;
