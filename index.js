@@ -192,26 +192,6 @@ Mgr.prototype.toJSON = function (dst) {
     }
 };
 
-
-Mgr.prototype.hash = function () {
-    // first get all the files
-    log.debug('hashing file now!');
-    //console.log(this._pages);
-    var webroot = this.config('webroot');
-    for (var page_name in this._pages) {
-        var page = this._pages[page_name];
-        // hash其实只取开头就够了
-        page.js = page.js.map(function (file) {
-            return file + '?hash=' + hash(webroot + '/' + file).substr(0, 6);
-        });
-
-        page.css = page.css.map(function (file) {
-            return file + '?hash=' + hash(webroot + '/' + file).substr(0, 6);
-        });
-    }
-
-};
-
 Mgr.prototype.upload = function () {
     log.debug('Parse before upload');
     this.parseAllPage();
@@ -231,9 +211,6 @@ Mgr.prototype.parseAllPage = function () {
     for (pageName in pages) {
         log.debug(pageName);
         this.parsePage(pageName);
-    }
-    if (this.config('hash')) {
-        this.hash();
     }
     this.toJSON(this._config.dst);
 };

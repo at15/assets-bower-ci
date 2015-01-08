@@ -1,16 +1,16 @@
 {
     "act": {
         "js": [
-            "assets/dist/group/base/base.min.js?hash=d98508",
-            "assets/dist/group/dt/dt.min.js?hash=75cba3"
+            "assets/dist/group/base/base.min.js",
+            "assets/dist/group/dt/dt.min.js"
         ],
         "css": [
-            "assets/dist/group/dt/dt.min.css?hash=ff42cb"
+            "assets/dist/group/dt/dt.min.css"
         ]
     },
     "home": {
         "js": [
-            "assets/dist/page/home/home.min.js?hash=5593fe"
+            "assets/dist/page/home/home.min.js"
         ],
         "css": []
     }
