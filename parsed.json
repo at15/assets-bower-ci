@@ -1,7 +1,7 @@
 {
     "act": {
         "js": [
-            "assets/dist/group/base/base-60f171.min.js",
+            "assets/dist/group/base/base-366d44.min.js",
             "assets/dist/group/dt/dt-eb9361.min.js"
         ],
         "css": [
