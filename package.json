@@ -24,7 +24,8 @@
         "mkdirp": "latest",
         "uglify-js": "latest",
         "clean-css": "latest",
-        "oss-client":"latest"
+        "oss-client":"latest",
+        "bluebird":"latest"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }

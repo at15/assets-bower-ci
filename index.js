@@ -31,6 +31,11 @@ Mgr.prototype.setConfig = function (configPath) {
     }
 };
 
+Mgr.prototype.setConfigValue = function(name,value){
+    log.debug('set config ' + name + ' to ' + value);
+    this._config[name] = value;
+};
+
 Mgr.prototype.config = function (name) {
     if (typeof this._config[name] !== 'undefined') {
         return this._config[name];
