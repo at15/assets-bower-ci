@@ -16,6 +16,7 @@
         "url": "https://github.com/at15/assets-bower-ci/issues"
     },
     "devDependencies": {
+        "mocha":"latest",
         "should": "latest"
     },
     "dependencies": {
@@ -26,6 +27,9 @@
         "clean-css": "latest",
         "oss-client":"latest",
         "bluebird":"latest"
+    },
+    "scripts": {
+      "test": "./node_modules/mocha/bin/mocha"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }
