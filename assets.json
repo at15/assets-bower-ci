@@ -6,37 +6,38 @@
     "dst": "parsed.json",
     "min": true,
     "clean": false,
-    "hash":true,
-    "oss":"config/oss.json",
+    "hash": true,
+    "oss": "config/oss.json",
     "libs": {
         "jquery": {
             "name": "jquery",
-            "bower": true
+            "files": [
+                "site/assets/lib/jquery/jquery.js"
+            ]
         },
         "bootstrap": {
             "name": "bootstrap",
-            "bower": true
+            "files": [
+                "site/assets/lib/bootstrap/css/bootstrap.css",
+                "site/assets/lib/bootstrap/js/bootstrap.js"
+            ]
         },
         "date-time": {
             "name": "date-time",
-            "bower": false,
             "files": ["site/assets/lib/date-time/*.*"],
-            "dependencies": ["jquery", "bootstrap"]
-        },
-        "umeditor": {
-            "name": "umeditor",
-            "bower": false,
-            "folder": "site/assets/lib/umeditor",
-            "files": [
-                "site/assets/lib/umeditor/umeditor.js",
-                "site/assets/lib/umeditor/umeditor.config.js"
+            "dependencies": [
+                "jquery",
+                "bootstrap"
             ]
         }
     },
     "groups": {
         "base": {
             "name": "base",
-            "libs": ["jquery", "bootstrap"],
+            "libs": [
+                "jquery",
+                "bootstrap"
+            ],
             "files": ["run.js"]
         },
         "dt": {
@@ -47,19 +48,21 @@
     "pages": {
         "act": {
             "name": "act",
-            "groups": ["base", "dt"],
+            "groups": [
+                "base",
+                "dt"
+            ],
             "libs": ["umeditor"]
-
         },
         "home": {
             "name": "home",
             "libs": ["jquery"],
-            "templates":[
-            "site/assets/home/nav.html",
-            "site/assets/home/detail.html"
+            "templates": [
+                "site/assets/home/nav.html",
+                "site/assets/home/detail.html"
             ],
-            "templatePath":"site/assets/home/tmpl.js",
-            "files":[
+            "templatePath": "site/assets/home/tmpl.js",
+            "files": [
                 "site/assets/home/*.js"
             ]
         }
