@@ -17,7 +17,7 @@
     },
     "devDependencies": {
         "mocha":"latest",
-        "should": "latest"
+        "chai": "latest"
     },
     "dependencies": {
         "log4js": "latest",
