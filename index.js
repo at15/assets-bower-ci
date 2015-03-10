@@ -23,6 +23,7 @@ Mgr.prototype.init = function () {
     this.loadedLibs = {};
 };
 
+// can removed
 Mgr.prototype.setConfig = function (configPath) {
     try {
         this._config = JSON.parse(fs.readFileSync(configPath));
@@ -31,11 +32,13 @@ Mgr.prototype.setConfig = function (configPath) {
     }
 };
 
-Mgr.prototype.setConfigValue = function(name,value){
+// can removed
+Mgr.prototype.setConfigValue = function (name, value) {
     log.debug('set config ' + name + ' to ' + value);
     this._config[name] = value;
 };
 
+// can removed
 Mgr.prototype.config = function (name) {
     if (typeof this._config[name] !== 'undefined') {
         return this._config[name];
@@ -45,10 +48,12 @@ Mgr.prototype.config = function (name) {
     }
 };
 
+// TODO:we should disable global min config
 Mgr.prototype.needMin = function () {
     return this.config('min') ? true : false;
 };
 
+// NOTE:this is in fact get lib config
 Mgr.prototype.getConfig = function (libName) {
     return this._config.libs[libName];
 };

@@ -1,4 +1,5 @@
 {
+    "foo": "bar",
     "libpath": "site/assets/dist/lib",
     "grouppath": "site/assets/dist/group",
     "pagepath": "site/assets/dist/page",

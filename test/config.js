@@ -26,4 +26,11 @@ describe('load config json', function () {
     it('can read config when the json file exists', function () {
         expect(config.loadConfigJson(process.cwd() + '/assets.json')).to.equal(true);
     });
+    it('can read config value', function () {
+        expect(config.get('foo')).to.equal('bar');
+    });
+    it('read lib config', function () {
+        var jq = config.getLib('jquery');
+        expect(jq.name).to.equal('jquery');
+    });
 });
