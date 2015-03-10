@@ -1,4 +1,5 @@
-require('should');
+var chai = require('chai');
+var should = chai.Should();
 var file = require('../lib/file-helper');
 var path = require('path');
 

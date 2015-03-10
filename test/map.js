@@ -1,5 +1,6 @@
 // test map
-require('should');
+var chai = require('chai');
+var should = chai.Should();
 
 describe('Array.prototype.map', function () {
     it('return some thing',function(){

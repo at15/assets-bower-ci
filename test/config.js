@@ -1,7 +1,8 @@
 /**
  * Created by at15 on 15-2-24.
  */
-
+var chai = require('chai');
+var should = chai.Should();
 
 describe('change config', function () {
     var Mgr = require('../index');
