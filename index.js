@@ -68,6 +68,7 @@ Mgr.prototype.parsePage = function (pageName) {
     }
     var pageFiles = [];
 
+    // TODO:为什么当时要每次new一个...cache不白cache了.
     var parse = new Parser({
         dstFolder: 'site',
         dstLibFolder: this.config('libpath'),
