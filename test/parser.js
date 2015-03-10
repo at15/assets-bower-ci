@@ -10,10 +10,18 @@ var parser = require('../lib/parser');
 
 describe('parse lib', function () {
     config.loadConfigJson('assets.json');
+    parser.init();
+
     it('parse jquery', function () {
-        parser.init();
+        //console.log(parser.getAllLibs());
         expect(parser.getLib('jquery')[0]).to.equal(
             path.resolve('site/assets/lib/jquery/jquery.js')
         );
-    })
+    });
+
+    it('load jquery for bootstrap', function () {
+        expect(parser.getLib('bootstrap')[0]).to.equal(
+            path.resolve('site/assets/lib/jquery/jquery.js')
+        );
+    });
 });

@@ -21,6 +21,9 @@
             "files": [
                 "site/assets/lib/bootstrap/css/bootstrap.css",
                 "site/assets/lib/bootstrap/js/bootstrap.js"
+            ],
+            "dependencies": [
+                "jquery"
             ]
         },
         "date-time": {
