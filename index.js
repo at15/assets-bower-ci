@@ -23,7 +23,7 @@ Mgr.prototype.init = function () {
     this.loadedLibs = {};
 };
 
-// can removed
+// can remove
 Mgr.prototype.setConfig = function (configPath) {
     try {
         this._config = JSON.parse(fs.readFileSync(configPath));
@@ -32,13 +32,13 @@ Mgr.prototype.setConfig = function (configPath) {
     }
 };
 
-// can removed
+// can remove
 Mgr.prototype.setConfigValue = function (name, value) {
     log.debug('set config ' + name + ' to ' + value);
     this._config[name] = value;
 };
 
-// can removed
+// can remove
 Mgr.prototype.config = function (name) {
     if (typeof this._config[name] !== 'undefined') {
         return this._config[name];
@@ -54,6 +54,7 @@ Mgr.prototype.needMin = function () {
 };
 
 // NOTE:this is in fact get lib config
+// can remove
 Mgr.prototype.getConfig = function (libName) {
     return this._config.libs[libName];
 };

@@ -6,6 +6,7 @@ var should = chai.Should();
 var expect = chai.expect;
 
 var config = require('../lib/config');
+var parser = require('../lib/parser');
 
 describe('change config', function () {
     var Mgr = require('../index');
@@ -32,5 +33,12 @@ describe('load config json', function () {
     it('read lib config', function () {
         var jq = config.getLib('jquery');
         expect(jq.name).to.equal('jquery');
+    });
+});
+
+describe('share config between libs', function () {
+    config.loadConfigJson('assets.json');
+    it('share config in parser', function () {
+        expect(parser.testConfig()).to.equal('bar');
     });
 });
