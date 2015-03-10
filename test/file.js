@@ -21,4 +21,3 @@ describe('file.glob', function () {
 });
 
 // TODO:test the cp .... how to test that....
-// TODO
