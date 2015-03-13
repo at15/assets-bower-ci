@@ -25,3 +25,17 @@ describe('parse lib', function () {
         );
     });
 });
+
+describe('parse group', function () {
+    config.loadConfigJson('assets.json');
+    parser.init();
+
+    it('parse group base', function () {
+        expect(parser.getGroup('base')[0]).to.equal(
+            path.resolve('site/assets/lib/jquery/jquery.js')
+        );
+        expect(parser.getGroup('base')[1]).to.equal(
+            path.resolve('site/assets/lib/bootstrap/css/bootstrap.css')
+        );
+    });
+});
