@@ -39,3 +39,14 @@ describe('parse group', function () {
         );
     });
 });
+
+describe('parse page', function () {
+    config.loadConfigJson('assets.json');
+    parser.init();
+
+    it('parse page act', function () {
+        expect(parser.getPage('act')[0]).to.equal(
+            path.resolve('site/assets/lib/jquery/jquery.js')
+        );
+    })
+});

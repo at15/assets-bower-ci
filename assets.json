@@ -55,8 +55,7 @@
             "groups": [
                 "base",
                 "dt"
-            ],
-            "libs": ["umeditor"]
+            ]
         },
         "home": {
             "name": "home",
