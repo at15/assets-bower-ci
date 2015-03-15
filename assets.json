@@ -9,6 +9,7 @@
     "clean": false,
     "hash": true,
     "oss": "config/oss.json",
+    "environment": "development",
     "libs": {
         "jquery": {
             "name": "jquery",
