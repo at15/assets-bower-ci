@@ -1,11 +1,8 @@
 {
     "name": "assets-bower-ci",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "assets-bower-ci ===============",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
+    "main": "mgr.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/at15/assets-bower-ci.git"
