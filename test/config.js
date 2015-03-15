@@ -12,11 +12,11 @@ describe('change config', function () {
     var Mgr = require('../index');
     var mgr = new Mgr('assets.json');
     it('get the config from json', function () {
-        mgr.config('libpath').should.eql('site/assets/dist/lib');
+        expect(mgr.config('foo')).to.equal('bar');
     });
     it('change on the fly', function () {
-        mgr.setConfigValue('libpath', 'dummypath');
-        mgr.config('libpath').should.eql('dummypath');
+        mgr.setConfigValue('foo', 'dummypath');
+        expect(mgr.config('foo')).to.equal('dummypath');
     });
 });
 
