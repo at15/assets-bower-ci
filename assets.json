@@ -69,6 +69,27 @@
             "files": [
                 "site/assets/home/*.js"
             ]
+        },
+        "home2": {
+            "name": "home2",
+            "groups": [
+                "base"
+            ],
+            "min": true
+        },
+        "home3": {
+            "name": "home3",
+            "groups": [
+                "base"
+            ],
+            "min": true
+        },
+        "home4": {
+            "name": "home4",
+            "groups": [
+                "base"
+            ],
+            "min": true
         }
     }
 }
