@@ -38,3 +38,5 @@ site/*
 
 #oss config
 config/oss.json
+
+parsed.json

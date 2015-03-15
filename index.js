@@ -23,6 +23,7 @@ Mgr.prototype.init = function () {
     this.loadedLibs = {};
 };
 
+// can remove
 Mgr.prototype.setConfig = function (configPath) {
     try {
         this._config = JSON.parse(fs.readFileSync(configPath));
@@ -31,11 +32,13 @@ Mgr.prototype.setConfig = function (configPath) {
     }
 };
 
-Mgr.prototype.setConfigValue = function(name,value){
+// can remove
+Mgr.prototype.setConfigValue = function (name, value) {
     log.debug('set config ' + name + ' to ' + value);
     this._config[name] = value;
 };
 
+// can remove
 Mgr.prototype.config = function (name) {
     if (typeof this._config[name] !== 'undefined') {
         return this._config[name];
@@ -45,10 +48,13 @@ Mgr.prototype.config = function (name) {
     }
 };
 
+// TODO:we should disable global min config
 Mgr.prototype.needMin = function () {
     return this.config('min') ? true : false;
 };
 
+// NOTE:this is in fact get lib config
+// can remove
 Mgr.prototype.getConfig = function (libName) {
     return this._config.libs[libName];
 };
@@ -62,6 +68,7 @@ Mgr.prototype.parsePage = function (pageName) {
     }
     var pageFiles = [];
 
+    // TODO:为什么当时要每次new一个...cache不白cache了.
     var parse = new Parser({
         dstFolder: 'site',
         dstLibFolder: this.config('libpath'),

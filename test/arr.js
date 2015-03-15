@@ -2,7 +2,8 @@
  * Created by at15 on 7/10/14.
  */
 // test the arr.js
-require("should");
+var chai = require('chai');
+var should = chai.Should();
 var arr = require('../lib/arr');
 
 describe('arr.inArray', function () {

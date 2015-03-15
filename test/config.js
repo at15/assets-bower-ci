@@ -1,7 +1,12 @@
 /**
  * Created by at15 on 15-2-24.
  */
+var chai = require('chai');
+var should = chai.Should();
+var expect = chai.expect;
 
+var config = require('../lib/config');
+var parser = require('../lib/parser');
 
 describe('change config', function () {
     var Mgr = require('../index');
@@ -10,7 +15,30 @@ describe('change config', function () {
         mgr.config('libpath').should.eql('site/assets/dist/lib');
     });
     it('change on the fly', function () {
-        mgr.setConfigValue('libpath','dummypath');
+        mgr.setConfigValue('libpath', 'dummypath');
         mgr.config('libpath').should.eql('dummypath');
+    });
+});
+
+describe('load config json', function () {
+    it('cant get the config when json file does not exist', function () {
+        expect(config.loadConfigJson('dummy.json')).to.equal(false);
+    });
+    it('can read config when the json file exists', function () {
+        expect(config.loadConfigJson(process.cwd() + '/assets.json')).to.equal(true);
+    });
+    it('can read config value', function () {
+        expect(config.get('foo')).to.equal('bar');
+    });
+    it('read lib config', function () {
+        var jq = config.getLib('jquery');
+        expect(jq.name).to.equal('jquery');
+    });
+});
+
+describe('share config between libs', function () {
+    config.loadConfigJson('assets.json');
+    it('share config in parser', function () {
+        expect(parser.testConfig()).to.equal('bar');
     });
 });
