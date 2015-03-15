@@ -37,11 +37,11 @@ mgr.run = function () {
 
             var pageConfig = config.getPage(pageName);
 
-            // load the libs
-            if (typeof pageConfig.libs === 'object') {
-                pageConfig.libs.forEach(function (libName) {
-                    minResults = min.lib(libName);
-                    outputResults = output.minLib(minResults, libName);
+            // load the groups
+            if (typeof  pageConfig.groups === 'object') {
+                pageConfig.groups.forEach(function (groupName) {
+                    minResults = min.group(groupName);
+                    outputResults = output.minGroup(minResults, groupName);
                     if (outputResults.js) {
                         finalOutput.js.push(outputResults.js);
                     }
@@ -51,11 +51,11 @@ mgr.run = function () {
                 });
             }
 
-            // load the groups
-            if (typeof  pageConfig.groups === 'object') {
-                pageConfig.groups.forEach(function (groupName) {
-                    minResults = min.group(groupName);
-                    outputResults = output.minGroup(minResults, groupName);
+            // load the libs
+            if (typeof pageConfig.libs === 'object') {
+                pageConfig.libs.forEach(function (libName) {
+                    minResults = min.lib(libName);
+                    outputResults = output.minLib(minResults, libName);
                     if (outputResults.js) {
                         finalOutput.js.push(outputResults.js);
                     }
