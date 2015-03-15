@@ -7,6 +7,8 @@
 
 var config = require('./lib/config');
 config.loadConfigJson('assets.json');
+
+var fh = require('./lib/file-helper');
 var parser = require('./lib/parser');
 var min = require('./lib/min');
 var output = require('./lib/output');
@@ -62,7 +64,7 @@ for (var pageName in pages) {
 
         // load the files
         if (typeof  pageConfig.files === 'object') {
-            minResults = min.files(pageConfig.files);
+            minResults = min.files(fh.glob(pageConfig.files));
             outputResults = output.minPageFile(minResults, pageName);
             if (outputResults.js) {
                 finalOutput.js.push(outputResults.js);
@@ -72,7 +74,7 @@ for (var pageName in pages) {
             }
         }
 
-        console.log(finalOutput);
+        //console.log(finalOutput);
         //return finalOutput;
     } else {
         console.log(parser.getPage(pageName));

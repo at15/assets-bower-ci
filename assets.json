@@ -81,8 +81,11 @@
         },
         "home3": {
             "name": "home3",
-            "groups": [
-                "base"
+            "libs": [
+                "jquery"
+            ],
+            "files": [
+                "site/assets/pages/home/*.*"
             ],
             "min": true
         },
