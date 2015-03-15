@@ -21,6 +21,10 @@ for (var pageName in pages) {
     if (!pages.hasOwnProperty(pageName)) {
         continue;
     }
+    var finalOutput = {
+        js: [],
+        css: []
+    };
     console.log('====== Page:', pageName, ' ======');
     if (config.pageNeedMin(pageName)) {
         console.log('page need min');
@@ -28,10 +32,7 @@ for (var pageName in pages) {
 
         var minResults = [];
         var outputResults = {};
-        var finalOutput = {
-            js: [],
-            css: []
-        };
+
         var pageConfig = config.getPage(pageName);
 
         // load the libs
@@ -74,9 +75,12 @@ for (var pageName in pages) {
             }
         }
 
-        //console.log(finalOutput);
-        //return finalOutput;
     } else {
-        console.log(parser.getPage(pageName));
+        finalOutput.js = fh.split(parser.getPage(pageName), 'js');
+        finalOutput.css = fh.split(parser.getPage(pageName), 'css');
     }
+    //console.log(finalOutput)
+    output.addPage(pageName, finalOutput);
 }
+
+output.toJson();

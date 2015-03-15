@@ -5,6 +5,7 @@
     "pagepath": "site/assets/dist/page",
     "webroot": "site",
     "dstFolder": "../piauoh",
+    "dstJson": "../piauoh/parsed.json",
     "dst": "parsed.json",
     "min": true,
     "clean": false,
