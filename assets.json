@@ -4,6 +4,7 @@
     "grouppath": "site/assets/dist/group",
     "pagepath": "site/assets/dist/page",
     "webroot": "site",
+    "dstFolder": "../piauoh",
     "dst": "parsed.json",
     "min": true,
     "clean": false,
@@ -73,7 +74,8 @@
         "home2": {
             "name": "home2",
             "groups": [
-                "base"
+                "base",
+                "dt"
             ],
             "min": true
         },

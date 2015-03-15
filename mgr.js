@@ -9,6 +9,7 @@ var config = require('./lib/config');
 config.loadConfigJson('assets.json');
 var parser = require('./lib/parser');
 var min = require('./lib/min');
+var output = require('./lib/output');
 
 parser.init();
 min.init();
@@ -22,6 +23,57 @@ for (var pageName in pages) {
     if (config.pageNeedMin(pageName)) {
         console.log('page need min');
         min.page(pageName);
+
+        var minResults = [];
+        var outputResults = {};
+        var finalOutput = {
+            js: [],
+            css: []
+        };
+        var pageConfig = config.getPage(pageName);
+
+        // load the libs
+        if (typeof pageConfig.libs === 'object') {
+            pageConfig.libs.forEach(function (libName) {
+                minResults = min.lib(libName);
+                outputResults = output.minLib(minResults, libName);
+                if (outputResults.js) {
+                    finalOutput.js.push(outputResults.js);
+                }
+                if (outputResults.css) {
+                    finalOutput.css.push(outputResults.css);
+                }
+            });
+        }
+
+        // load the groups
+        if (typeof  pageConfig.groups === 'object') {
+            pageConfig.groups.forEach(function (groupName) {
+                minResults = min.group(groupName);
+                outputResults = output.minGroup(minResults, groupName);
+                if (outputResults.js) {
+                    finalOutput.js.push(outputResults.js);
+                }
+                if (outputResults.css) {
+                    finalOutput.css.push(outputResults.css);
+                }
+            });
+        }
+
+        // load the files
+        if (typeof  pageConfig.files === 'object') {
+            minResults = min.files(pageConfig.files);
+            outputResults = output.minPageFile(minResults, pageName);
+            if (outputResults.js) {
+                finalOutput.js.push(outputResults.js);
+            }
+            if (outputResults.css) {
+                finalOutput.css.push(outputResults.css);
+            }
+        }
+
+        console.log(finalOutput);
+        //return finalOutput;
     } else {
         console.log(parser.getPage(pageName));
     }
