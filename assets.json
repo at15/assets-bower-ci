@@ -1,17 +1,11 @@
 {
     "foo": "bar",
-    "libpath": "site/assets/dist/lib",
-    "grouppath": "site/assets/dist/group",
-    "pagepath": "site/assets/dist/page",
-    "webroot": "site",
-    "dstFolder": "../piauoh",
-    "dstJson": "../piauoh/parsed.json",
-    "dst": "parsed.json",
-    "min": true,
-    "clean": false,
-    "hash": true,
-    "oss": "config/oss.json",
     "environment": "development",
+    "env-development": {
+        "webroot": ".",
+        "dstFolder": "../piauoh",
+        "dstJson": "parsed.json"
+    },
     "libs": {
         "jquery": {
             "name": "jquery",
