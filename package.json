@@ -1,6 +1,6 @@
 {
     "name": "assets-bower-ci",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "description": "assets-bower-ci ===============",
     "main": "mgr.js",
     "repository": {
