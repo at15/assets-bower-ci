@@ -77,12 +77,14 @@ mgr.run = function () {
                 }
             }
 
+            output.addMinedPage(pageName, finalOutput);
         } else {
+            // TODO:copy all the files to the dst folder? yes
             finalOutput.js = fh.split(parser.getPage(pageName), 'js');
             finalOutput.css = fh.split(parser.getPage(pageName), 'css');
+            output.addPage(pageName, finalOutput);
         }
         //console.log(finalOutput)
-        output.addPage(pageName, finalOutput);
     }
 };
 

@@ -2,7 +2,8 @@
     "foo": "bar",
     "environment": "development",
     "env-development": {
-        "webroot": ".",
+        "srcwebroot": ".",
+        "dstwebroot":"../piauoh",
         "dstFolder": "../piauoh",
         "dstJson": "parsed.json"
     },
