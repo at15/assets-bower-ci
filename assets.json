@@ -2,6 +2,7 @@
     "foo": "bar",
     "environment": "development",
     "env-development": {
+        "baseUrl":"dummy",
         "srcwebroot": ".",
         "dstwebroot":"../piauoh",
         "dstFolder": "../piauoh",
