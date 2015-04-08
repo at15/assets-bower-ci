@@ -8,17 +8,6 @@ var expect = chai.expect;
 var config = require('../lib/config');
 var parser = require('../lib/parser');
 
-describe('change config', function () {
-    var Mgr = require('../index');
-    var mgr = new Mgr('assets.json');
-    it('get the config from json', function () {
-        expect(mgr.config('foo')).to.equal('bar');
-    });
-    it('change on the fly', function () {
-        mgr.setConfigValue('foo', 'dummypath');
-        expect(mgr.config('foo')).to.equal('dummypath');
-    });
-});
 
 describe('load config json', function () {
     it('cant get the config when json fileHelper does not exist', function () {
