@@ -1,23 +1,39 @@
 var chai = require('chai');
 var should = chai.Should();
-var file = require('../lib/file-helper');
+var expect = chai.expect;
+var fileHelper = require('../lib/file-helper');
 var path = require('path');
 
-describe('file.glob', function () {
+describe('fileHelper.glob', function () {
     it('return empty when find nothing', function () {
-        file.glob('*.lq').should.eql([]);
+        fileHelper.glob('*.lq').should.eql([]);
     });
     it('return sth when found sth', function () {
         var t = [
             path.resolve('test/glob/a.js'),
             path.resolve('test/glob/t.js')
         ];
-        file.glob('test/glob/*.js').should.eql(t);
+        fileHelper.glob('test/glob/*.js').should.eql(t);
     });
-    it('can split file', function () {
-        file.split(file.glob('test/glob/*.*'),'css')
+    it('can split fileHelper', function () {
+        fileHelper.split(fileHelper.glob('test/glob/*.*'), 'css')
             .should.eql([path.resolve('test/glob/a.css')]);
     });
 });
 
+describe('fileHelper.dfs', function () {
+    it('return all files in one folder', function () {
+        var f = fileHelper.dfs('test/glob');
+        var r = [
+            'a.css',
+            'a.js',
+            't/t.js',
+            't.js'
+        ];
+        r = r.map(function (t) {
+            return 'test/glob/' + t;
+        });
+        expect(f).to.eql(r);
+    });
+});
 // TODO:test the cp .... how to test that....

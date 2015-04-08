@@ -179,7 +179,7 @@ Mgr.prototype.parsePage = function (pageName) {
         }
         pageFiles = arrh.merge(pageFiles, filesOnly);
     }
-    log.debug('Resolve file path ');
+    log.debug('Resolve fileHelper path ');
     pageFiles = fh.resolve(pageFiles, this.config('webroot'));
 
 

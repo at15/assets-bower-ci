@@ -33,7 +33,7 @@ var Parser = require('../lib/parse');
 //        });
 //        bs.should.eql(realBsFiles);
 //    });
-//    it('won\'t merge file twice', function () {
+//    it('won\'t merge fileHelper twice', function () {
 //        var date_time = p1.parseLib('date-time');
 //        var dtFiles =
 //            [
