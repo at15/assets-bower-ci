@@ -2,8 +2,8 @@
     "foo": "bar",
     "environment": "development",
     "env-development": {
-        "baseUrl":"dummy",
-        "srcwebroot": ".",
+        "baseUrl":"http://dummycdn.com",
+        "srcwebroot": "site",
         "dstwebroot":"../piauoh",
         "dstFolder": "../piauoh",
         "dstJson": "parsed.json"
