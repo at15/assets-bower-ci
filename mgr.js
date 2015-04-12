@@ -9,6 +9,7 @@ var fh = require('./lib/file-helper');
 var parser = require('./lib/parser');
 var min = require('./lib/min');
 var output = require('./lib/output');
+var log = require('./lib/log');
 
 
 mgr.init = function (jsonPath) {
@@ -27,9 +28,9 @@ mgr.run = function () {
             js: [],
             css: []
         };
-        console.log('====== Page:', pageName, ' ======');
+        log.info('====== Page:', pageName, ' ======');
         if (config.pageNeedMin(pageName)) {
-            console.log('page need min');
+            log.debug('page need min');
             min.page(pageName);
 
             var minResults = [];
