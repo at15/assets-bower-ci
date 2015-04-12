@@ -22,7 +22,8 @@
         "mkdirp": "latest",
         "uglify-js": "latest",
         "clean-css": "latest",
-        "bluebird":"latest"
+        "bluebird": "latest",
+        "lodash": "latest"
     },
     "scripts": {
       "test": "./node_modules/mocha/bin/mocha"
