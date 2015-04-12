@@ -16,6 +16,7 @@ mgr.init = function (jsonPath) {
     config.loadConfigJson(jsonPath);
     parser.init();
     min.init();
+    log.setLevel(config.currentEnvironmentSetting('logLevel', 'DEBUG'));
 };
 
 mgr.run = function () {
