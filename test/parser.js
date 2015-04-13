@@ -14,13 +14,13 @@ describe('parse lib', function () {
 
     it('parse jquery', function () {
         //console.log(parser.getAllLibs());
-        expect(parser.getLib('jquery')[0]).to.equal(
+        expect(parser.getLib('jquery')).to.include(
             path.resolve('site/assets/lib/jquery/jquery.js')
         );
     });
 
     it('load jquery for bootstrap', function () {
-        expect(parser.getLib('bootstrap')[0]).to.equal(
+        expect(parser.getLib('bootstrap')).to.include(
             path.resolve('site/assets/lib/jquery/jquery.js')
         );
     });
@@ -31,12 +31,13 @@ describe('parse group', function () {
     parser.init();
 
     it('parse group base', function () {
-        expect(parser.getGroup('base')[0]).to.equal(
-            path.resolve('site/assets/lib/jquery/jquery.js')
-        );
-        expect(parser.getGroup('base')[1]).to.equal(
-            path.resolve('site/assets/lib/bootstrap/css/bootstrap.css')
-        );
+        expect(parser.getGroup('base')).to
+            .include(
+                path.resolve('site/assets/lib/jquery/jquery.js')
+            )
+            .include(
+                path.resolve('site/assets/lib/bootstrap/css/bootstrap.css')
+            );
     });
 });
 
@@ -45,7 +46,7 @@ describe('parse page', function () {
     parser.init();
 
     it('parse page act', function () {
-        expect(parser.getPage('act')[0]).to.equal(
+        expect(parser.getPage('act')).to.include(
             path.resolve('site/assets/lib/jquery/jquery.js')
         );
     })
