@@ -1,6 +1,8 @@
 assets-bower-ci
 ===============
 
+[![Build Status](https://travis-ci.org/at15/assets-bower-ci.svg?branch=master)](https://travis-ci.org/at15/assets-bower-ci)
+
 A front-end assets management tool for php frameworks
 
 ### TODO
