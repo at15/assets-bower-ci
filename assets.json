@@ -73,8 +73,7 @@
             "groups": [
                 "base",
                 "dt"
-            ],
-            "min": true
+            ]
         },
         "home3": {
             "name": "home3",
@@ -83,15 +82,13 @@
             ],
             "files": [
                 "site/assets/pages/home/*.*"
-            ],
-            "min": true
+            ]
         },
         "home4": {
             "name": "home4",
             "groups": [
                 "base"
-            ],
-            "min": true
+            ]
         }
     }
 }
