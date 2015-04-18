@@ -4,8 +4,8 @@
 var chai = require('chai');
 var expect = chai.expect;
 
-describe('dummy test', function () {
-    it('dummy is just dummy', function () {
-        expect('dummy').to.equal('dummy');
+describe('Run through', function () {
+    it('`node example.js`', function () {
+        require('../example.js');
     })
 });
