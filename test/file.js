@@ -2,6 +2,9 @@
 
 var chai = require('chai');
 var expect = chai.expect;
+/* eslint-disable */
+var should = chai.Should();
+/* eslint-enable */
 var fileHelper = require('../lib/file-helper');
 var path = require('path');
 
