@@ -2,6 +2,10 @@
  * Created by at15 on 15-3-10.
  */
 // The new assets manager
+'use strict';
+
+var lodash = require('lodash');
+
 var mgr = {};
 
 var config = require('./lib/config');
@@ -21,10 +25,8 @@ mgr.init = function (jsonPath) {
 
 mgr.run = function () {
     var pages = config.getAllPages();
-    for (var pageName in pages) {
-        if (!pages.hasOwnProperty(pageName)) {
-            continue;
-        }
+
+    lodash.for(pages, function (_, pageName) {
         var finalOutput = {
             js: [],
             css: []
@@ -40,7 +42,7 @@ mgr.run = function () {
             var pageConfig = config.getPage(pageName);
 
             // load the groups
-            if (typeof  pageConfig.groups === 'object') {
+            if (typeof pageConfig.groups === 'object') {
                 pageConfig.groups.forEach(function (groupName) {
                     minResults = min.group(groupName);
                     outputResults = output.minGroup(minResults, groupName);
@@ -68,7 +70,7 @@ mgr.run = function () {
             }
 
             // load the files
-            if (typeof  pageConfig.files === 'object') {
+            if (typeof pageConfig.files === 'object') {
                 minResults = min.files(fh.glob(pageConfig.files));
                 outputResults = output.minPageFile(minResults, pageName);
                 if (outputResults.js) {
@@ -86,8 +88,7 @@ mgr.run = function () {
             finalOutput.css = fh.split(parser.getPage(pageName), 'css');
             output.addPage(pageName, finalOutput);
         }
-        //console.log(finalOutput)
-    }
+    });
 };
 
 mgr.toJson = function () {
