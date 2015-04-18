@@ -26,7 +26,7 @@ mgr.init = function (jsonPath) {
 mgr.run = function () {
     var pages = config.getAllPages();
 
-    lodash.for(pages, function (_, pageName) {
+    lodash.forIn(pages, function (_, pageName) {
         var finalOutput = {
             js: [],
             css: []
