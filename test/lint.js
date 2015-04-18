@@ -1,7 +1,9 @@
+'use strict';
+
 var config = require('../lib/config'),
     lint = require('../lib/lint');
-var chai = require('chai'),
-    expect = chai.expect;
+var chai = require('chai');
+var expect = chai.expect;
 
 describe('lint json', function () {
     it('lint assets.json', function () {

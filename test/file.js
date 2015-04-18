@@ -1,5 +1,6 @@
+'use strict';
+
 var chai = require('chai');
-var should = chai.Should();
 var expect = chai.expect;
 var fileHelper = require('../lib/file-helper');
 var path = require('path');

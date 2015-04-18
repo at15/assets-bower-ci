@@ -1,3 +1,5 @@
+'use strict';
+
 // test env.
 var chai = require('chai');
 var expect = chai.expect;
@@ -20,6 +22,6 @@ describe('test env read', function () {
         expect(
             function () {
                 env.get(name, '', true);
-            }).to.throw('config item ' + name + ' not found')
+            }).to.throw('config item ' + name + ' not found');
     });
 });

@@ -1,8 +1,9 @@
 /**
  * Created by at15 on 15-2-24.
  */
+'use strict';
+
 var chai = require('chai');
-var should = chai.Should();
 var expect = chai.expect;
 
 var config = require('../lib/config');
