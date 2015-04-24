@@ -29,7 +29,7 @@
         "gulp-mocha": "latest"
     },
     "scripts": {
-      "test": "./node_modules/mocha/bin/mocha"
+      "test": "gulp test"
     },
     "homepage": "https://github.com/at15/assets-bower-ci"
 }
