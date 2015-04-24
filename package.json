@@ -25,7 +25,8 @@
         "bluebird": "latest",
         "lodash": "latest",
         "gulp": "^3.8.1",
-        "gulp-eslint": "latest"
+        "gulp-eslint": "latest",
+        "gulp-mocha": "latest"
     },
     "scripts": {
       "test": "./node_modules/mocha/bin/mocha"

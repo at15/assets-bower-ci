@@ -5,7 +5,8 @@
 'use strict';
 
 var gulp = require('gulp'),
-    eslint = require('gulp-eslint');
+    eslint = require('gulp-eslint'),
+    mocha = require('gulp-mocha');
 
 gulp.task('lint', function () {
     return gulp.src([
@@ -18,7 +19,14 @@ gulp.task('lint', function () {
         .pipe(eslint.failOnError());
 });
 
-gulp.task('default', ['lint'], function () {
+gulp.task('test', ['lint'], function () {
+    return gulp.src(
+        'test/*.js'
+    )
+        .pipe(mocha());
+});
+
+gulp.task('default', ['test'], function () {
     console.log('This is the default gulp task.');
 });
 
