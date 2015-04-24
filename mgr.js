@@ -34,7 +34,6 @@ mgr.run = function () {
         log.info('====== Page:', pageName, ' ======');
         if (config.pageNeedMin(pageName)) {
             log.debug('page need min');
-            min.page(pageName);
 
             var minResults = [];
             var outputResults = {};
@@ -81,13 +80,12 @@ mgr.run = function () {
                 }
             }
 
-            output.addMinedPage(pageName, finalOutput);
         } else {
             // TODO:copy all the files to the dst folder? yes
             finalOutput.js = fh.split(parser.getPage(pageName), 'js');
             finalOutput.css = fh.split(parser.getPage(pageName), 'css');
-            output.addPage(pageName, finalOutput);
         }
+        output.addPage(pageName, finalOutput);
     });
 };
 
