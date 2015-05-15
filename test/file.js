@@ -48,6 +48,10 @@ describe('fileHelper.writeWithHash', function () {
         var dst = fileHelper.writeWithHash('test/min/t', fs.readFileSync('test/glob/t.js'), 'min.js');
         expect(dst).to.eql('test/min/t-b45beb2dd9fbb534b9bdeb13d21c0bae.min.js');
     });
+    it('ok for extension has dot ', function () {
+        var dst = fileHelper.writeWithHash('test/min/t2', fs.readFileSync('test/glob/t.js'), '.min.js');
+        expect(dst).to.eql('test/min/t2-b45beb2dd9fbb534b9bdeb13d21c0bae.min.js');
+    });
 });
 
 // TODO:test the cp .... how to test that...., remove file and test if file exist
