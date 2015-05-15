@@ -8,16 +8,18 @@ var expect = chai.expect;
 var stringHelper = require('../lib/string-helper');
 
 describe('stringHelper.trim', function () {
-    //it('trim one space', function () {
-    //    expect(stringHelper.trim(' 123 ')).to.eql('123');
-    //    expect(stringHelper.trim(' 123 ', '')).to.eql('123');
-    //    expect(stringHelper.trim(' 123 ', ' ')).to.eql('123');
-    //});
-    //
-    //it('trim one other character', function () {
-    //    expect(stringHelper.trim('.123.', '.')).to.eql('123');
-    //});
+    it('trim one space', function () {
+        expect(stringHelper.trim(' 123 ')).to.eql('123');
+        expect(stringHelper.trim(' 123 ', '')).to.eql('123');
+        expect(stringHelper.trim(' 123 ', ' ')).to.eql('123');
+    });
+
+    it('trim one other character', function () {
+        expect(stringHelper.trim('.123.', '.')).to.eql('123');
+        expect(stringHelper.trim('/123.js', '/')).to.eql('123.js');
+    });
     it('trim continuous character', function () {
-        expect(stringHelper.trim('..123..')).to.eql('123');
+        expect(stringHelper.trim('..123..', '.')).to.eql('123');
+        expect(stringHelper.trim('//123.js', '/')).to.eql('123.js');
     });
 });
