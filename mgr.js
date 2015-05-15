@@ -44,7 +44,7 @@ mgr.run = function () {
             if (typeof pageConfig.groups === 'object') {
                 pageConfig.groups.forEach(function (groupName) {
                     minResults = min.group(groupName);
-                    outputResults = output.minGroup(minResults, groupName);
+                    outputResults = output.writeCompressedGroup(minResults, groupName);
                     if (outputResults.js) {
                         finalOutput.js.push(outputResults.js);
                     }
@@ -58,7 +58,7 @@ mgr.run = function () {
             if (typeof pageConfig.libs === 'object') {
                 pageConfig.libs.forEach(function (libName) {
                     minResults = min.lib(libName);
-                    outputResults = output.minLib(minResults, libName);
+                    outputResults = output.writeCompressedLib(minResults, libName);
                     if (outputResults.js) {
                         finalOutput.js.push(outputResults.js);
                     }
@@ -71,7 +71,7 @@ mgr.run = function () {
             // load the files
             if (typeof pageConfig.files === 'object') {
                 minResults = min.files(fh.glob(pageConfig.files));
-                outputResults = output.minPageFile(minResults, pageName);
+                outputResults = output.writeCompressedPage(minResults, pageName);
                 if (outputResults.js) {
                     finalOutput.js.push(outputResults.js);
                 }
