@@ -1,12 +1,19 @@
 {
     "foo": "bar",
-    "environment": "development",
+    "environment": "test",
     "env-development": {
         "baseUrl":"http://dummycdn.com",
         "srcwebroot": "site",
         "dstwebroot":"../piauoh",
         "dstFolder": "../piauoh",
-        "dstJson": "parsed.json"
+        "dstJson": "parsed-development.json"
+    },
+    "env-test":{
+        "baseUrl":"http://dummycdn.com",
+        "srcwebroot": "site",
+        "dstwebroot":"../piauoh",
+        "dstFolder": "../piauoh",
+        "dstJson": "parsed-test.json"
     },
     "libs": {
         "jquery": {

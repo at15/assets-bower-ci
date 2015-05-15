@@ -45,5 +45,7 @@ site/*
 config/oss.json
 
 parsed.json
+parsed-development.json
+parsed-test.json
 
 test/min/*
