@@ -29,4 +29,3 @@ gulp.task('test', ['lint'], function () {
 gulp.task('default', ['test'], function () {
     console.log('This is the default gulp task.');
 });
-
