@@ -10,7 +10,6 @@ var mgr = {};
 
 var log = require('./lib/log');
 var config = require('./lib/config');
-var fh = require('./lib/file-helper');
 var parser = require('./lib/parser');
 var min = require('./lib/min');
 var output = require('./lib/output');
