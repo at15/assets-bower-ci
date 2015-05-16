@@ -27,15 +27,13 @@ mgr.run = function () {
     var pages = config.getAllPages();
 
     lodash.forIn(pages, function (_, pageName) {
-        var finalOutput = {
-            js: [],
-            css: []
-        };
         log.info('====== Page:', pageName, ' ======');
+        var tPage = output.createTempPage();
         if (config.pageNeedMin(pageName)) {
             log.debug('page need min');
 
             var minResults = [];
+
             var outputResults = {};
 
             var pageConfig = config.getPage(pageName);
@@ -45,12 +43,7 @@ mgr.run = function () {
                 pageConfig.groups.forEach(function (groupName) {
                     minResults = min.group(groupName);
                     outputResults = output.writeCompressedGroup(minResults, groupName);
-                    if (outputResults.js) {
-                        finalOutput.js.push(outputResults.js);
-                    }
-                    if (outputResults.css) {
-                        finalOutput.css.push(outputResults.css);
-                    }
+                    tPage.add(outputResults);
                 });
             }
 
@@ -59,12 +52,7 @@ mgr.run = function () {
                 pageConfig.libs.forEach(function (libName) {
                     minResults = min.lib(libName);
                     outputResults = output.writeCompressedLib(minResults, libName);
-                    if (outputResults.js) {
-                        finalOutput.js.push(outputResults.js);
-                    }
-                    if (outputResults.css) {
-                        finalOutput.css.push(outputResults.css);
-                    }
+                    tPage.add(outputResults);
                 });
             }
 
@@ -72,20 +60,16 @@ mgr.run = function () {
             if (typeof pageConfig.files === 'object') {
                 minResults = min.files(fh.glob(pageConfig.files));
                 outputResults = output.writeCompressedPage(minResults, pageName);
-                if (outputResults.js) {
-                    finalOutput.js.push(outputResults.js);
-                }
-                if (outputResults.css) {
-                    finalOutput.css.push(outputResults.css);
-                }
+                tPage.add(outputResults);
             }
-
         } else {
             // TODO:copy all the files to the dst folder? yes
-            finalOutput.js = fh.split(parser.getPage(pageName), 'js');
-            finalOutput.css = fh.split(parser.getPage(pageName), 'css');
+            tPage.add({
+                js:fh.split(parser.getPage(pageName), 'js'),
+                css:fh.split(parser.getPage(pageName), 'css')
+            });
         }
-        output.addPage(pageName, finalOutput);
+        output.addPage(pageName, tPage.get());
     });
 };
 
