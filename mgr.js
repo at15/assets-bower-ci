@@ -8,13 +8,13 @@ var lodash = require('lodash');
 
 var mgr = {};
 
+var log = require('./lib/log');
 var config = require('./lib/config');
 var fh = require('./lib/file-helper');
 var parser = require('./lib/parser');
 var min = require('./lib/min');
 var output = require('./lib/output');
-var log = require('./lib/log');
-
+var Page = require('./lib/page');
 
 mgr.init = function (jsonPath) {
     config.loadConfigJson(jsonPath);
@@ -28,58 +28,8 @@ mgr.run = function () {
 
     lodash.forIn(pages, function (_, pageName) {
         log.info('====== Page:', pageName, ' ======');
-
-        var tPage = output.createTempPage();
-        var dealGroup,dealLib,dealFile;
-        if(config.pageNeedMin(pageName)){
-            dealGroup = min.group;
-            dealLib = min.lib;
-            dealFile = min.files;
-        }else{
-            dealGroup = min.groupFake;
-            dealLib = min.libFake;
-            dealFile = min.filesFake;
-        }
-
-        if (config.pageNeedMin(pageName)) {
-            log.debug('page need min');
-
-            var minResults = [];
-            var outputResults = {};
-
-            var pageConfig = config.getPage(pageName);
-
-            // load the groups
-            if (typeof pageConfig.groups === 'object') {
-                pageConfig.groups.forEach(function (groupName) {
-                    minResults = dealGroup(groupName);
-                    outputResults = output.writeCompressedGroup(minResults, groupName);
-                    tPage.add(outputResults);
-                });
-            }
-
-            // load the libs
-            if (typeof pageConfig.libs === 'object') {
-                pageConfig.libs.forEach(function (libName) {
-                    minResults = dealLib(libName);
-                    outputResults = output.writeCompressedLib(minResults, libName);
-                    tPage.add(outputResults);
-                });
-            }
-
-            // load the files
-            if (typeof pageConfig.files === 'object') {
-                minResults = dealFile(fh.glob(pageConfig.files));
-                outputResults = output.writeCompressedPage(minResults, pageName);
-                tPage.add(outputResults);
-            }
-        } else {
-            // TODO:copy all the files to the dst folder? yes
-            tPage.add({
-                js:fh.split(parser.getPage(pageName), 'js'),
-                css:fh.split(parser.getPage(pageName), 'css')
-            });
-        }
+        var tPage = new Page(pageName);
+        tPage.processAll();
         output.addPage(pageName, tPage.get());
     });
 };
