@@ -54,4 +54,18 @@ describe('fileHelper.writeWithHash', function () {
     });
 });
 
+describe('fileHelper.copyWithStructure', function () {
+    it('keep the old structure', function () {
+        var dst = fileHelper.copyWithStructure('test/glob/t.js', 'test', 'test/min');
+        expect(dst).to.eql('test/min/glob/t.js');
+    });
+});
+
+describe('fileHelper.copyWithStructureAndHash', function () {
+    it('keep the old structure and add hash as well', function () {
+        var dst = fileHelper.copyWithStructureAndHash('test/glob/t.js', 'test', 'test/min');
+        expect(dst).to.eql('test/min/glob/t-b45beb2dd9fbb534b9bdeb13d21c0bae.js');
+    });
+});
+
 // TODO:test the cp .... how to test that...., remove file and test if file exist
