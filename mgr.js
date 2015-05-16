@@ -28,12 +28,23 @@ mgr.run = function () {
 
     lodash.forIn(pages, function (_, pageName) {
         log.info('====== Page:', pageName, ' ======');
+
         var tPage = output.createTempPage();
+        var dealGroup,dealLib,dealFile;
+        if(config.pageNeedMin(pageName)){
+            dealGroup = min.group;
+            dealLib = min.lib;
+            dealFile = min.files;
+        }else{
+            dealGroup = min.groupFake;
+            dealLib = min.libFake;
+            dealFile = min.filesFake;
+        }
+
         if (config.pageNeedMin(pageName)) {
             log.debug('page need min');
 
             var minResults = [];
-
             var outputResults = {};
 
             var pageConfig = config.getPage(pageName);
@@ -41,7 +52,7 @@ mgr.run = function () {
             // load the groups
             if (typeof pageConfig.groups === 'object') {
                 pageConfig.groups.forEach(function (groupName) {
-                    minResults = min.group(groupName);
+                    minResults = dealGroup(groupName);
                     outputResults = output.writeCompressedGroup(minResults, groupName);
                     tPage.add(outputResults);
                 });
@@ -50,7 +61,7 @@ mgr.run = function () {
             // load the libs
             if (typeof pageConfig.libs === 'object') {
                 pageConfig.libs.forEach(function (libName) {
-                    minResults = min.lib(libName);
+                    minResults = dealLib(libName);
                     outputResults = output.writeCompressedLib(minResults, libName);
                     tPage.add(outputResults);
                 });
@@ -58,7 +69,7 @@ mgr.run = function () {
 
             // load the files
             if (typeof pageConfig.files === 'object') {
-                minResults = min.files(fh.glob(pageConfig.files));
+                minResults = dealFile(fh.glob(pageConfig.files));
                 outputResults = output.writeCompressedPage(minResults, pageName);
                 tPage.add(outputResults);
             }
