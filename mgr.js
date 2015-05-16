@@ -34,7 +34,11 @@ mgr.run = function () {
 };
 
 mgr.toJson = function () {
-    output.toJson();
+    output.writeJson();
+};
+
+mgr.getResult = function(){
+    return output.toObject();
 };
 
 module.exports = mgr;
