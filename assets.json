@@ -1,6 +1,6 @@
 {
     "foo": "bar",
-    "environment": "test",
+    "environment": "development",
     "env-development": {
         "baseUrl":"http://dummycdn.com",
         "srcwebroot": "site",
