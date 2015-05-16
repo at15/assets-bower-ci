@@ -61,4 +61,11 @@ describe('fileHelper.copyWithStructure', function () {
     });
 });
 
+describe('fileHelper.copyWithStructureAndHash', function () {
+    it('keep the old structure and add hash as well', function () {
+        var dst = fileHelper.copyWithStructureAndHash('test/glob/t.js', 'test', 'test/min');
+        expect(dst).to.eql('test/min/glob/t-b45beb2dd9fbb534b9bdeb13d21c0bae.js');
+    });
+});
+
 // TODO:test the cp .... how to test that...., remove file and test if file exist
