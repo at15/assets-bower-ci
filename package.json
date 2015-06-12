@@ -14,7 +14,10 @@
     },
     "devDependencies": {
         "mocha":"latest",
-        "chai": "latest"
+        "chai": "latest",
+	"gulp": "^3.8.1",
+        "gulp-eslint": "latest",
+        "gulp-mocha": "latest"
     },
     "dependencies": {
         "log4js": "latest",
@@ -24,9 +27,6 @@
         "clean-css": "latest",
         "bluebird": "latest",
         "lodash": "latest",
-        "gulp": "^3.8.1",
-        "gulp-eslint": "latest",
-        "gulp-mocha": "latest"
     },
     "scripts": {
       "test": "gulp test"
