@@ -26,7 +26,7 @@
         "uglify-js": "latest",
         "clean-css": "latest",
         "bluebird": "latest",
-        "lodash": "latest",
+        "lodash": "latest"
     },
     "scripts": {
       "test": "gulp test"
